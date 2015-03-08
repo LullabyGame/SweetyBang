@@ -68,10 +68,11 @@ bool NormalModeScene::initLayer() {
 //    backgroundLayer->setPosition(Point(origin.x, origin.y));
 //    backgroundLayer->setContentSize(Size(visiableSize.width, visiableSize.height));
 //    this->addChild(backgroundLayer);
+    
     background = Sprite::create("img/background.png");
     background->setAnchorPoint(Point::ZERO);
     background->setPosition(Point::ZERO);
-    background->setScale(visiableSize.width / 640);
+//    background->setScale(visiableSize.width / 640);
     this->addChild(background);
     
     // 添加"back to main menu"按钮
