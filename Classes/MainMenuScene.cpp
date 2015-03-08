@@ -34,13 +34,9 @@ bool MainMenuScene::init() {
     Size visiableSize = Director::getInstance()->getVisibleSize();
     
     // 背景
-//    auto backgroundLayer = LayerColor::create(Color4B(238, 222, 170, 255));
-//    this->addChild(backgroundLayer);
-    Sprite *background;
-    background = Sprite::create("img/background.png");
+    auto background = Sprite::create("img/background.png");
     background->setAnchorPoint(Point::ZERO);
     background->setPosition(Point::ZERO);
-    background->setScale(visiableSize.width / 640);
     this->addChild(background);
 
     // NormalMode按钮

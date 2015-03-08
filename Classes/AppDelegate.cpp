@@ -31,28 +31,20 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::FIXED_WIDTH);
     
+    float contentScaleFactor = 0;
     if (frameSize.height == iphone4.size.height && frameSize.width == iphone4.size.width) {
-        director->setContentScaleFactor(MIN(iphone4.size.height/designResolutionSize.height,
-                                            iphone4.size.width/designResolutionSize.width));
-        
-    }else if (frameSize.height == iphone5.size.height && frameSize.width == iphone5.size.width){
-        director->setContentScaleFactor(MIN(iphone5.size.height/designResolutionSize.height,
-                                            iphone5.size.width/designResolutionSize.width));
-
-    }else if (frameSize.height == iphone6.size.height && frameSize.width == iphone6.size.width){
-        director->setContentScaleFactor(MIN(iphone6.size.height/designResolutionSize.height,
-                                            iphone6.size.width/designResolutionSize.width));
-
-    }else if (frameSize.height == iphone6_plus.size.height && frameSize.width == iphone6_plus.size.width){
-        director->setContentScaleFactor(MIN(iphone6_plus.size.height/designResolutionSize.height,
-                                            iphone6_plus.size.width/designResolutionSize.width));
-
-    }else{
-        director->setContentScaleFactor(MIN(iphone6.size.height/designResolutionSize.height,
-                                            iphone6.size.width/designResolutionSize.width));
-
+        contentScaleFactor = MIN(iphone4.size.height / designResolutionSize.height, iphone4.size.width / designResolutionSize.width);
+    }else if (frameSize.height == iphone5.size.height && frameSize.width == iphone5.size.width) {
+        contentScaleFactor = MIN(iphone5.size.height / designResolutionSize.height, iphone5.size.width / designResolutionSize.width);
+    }else if (frameSize.height == iphone6.size.height && frameSize.width == iphone6.size.width) {
+        contentScaleFactor = MIN(iphone6.size.height / designResolutionSize.height, iphone6.size.width / designResolutionSize.width);
+    }else if (frameSize.height == iphone6_plus.size.height && frameSize.width == iphone6_plus.size.width) {
+        contentScaleFactor = MIN(iphone6_plus.size.height / designResolutionSize.height, iphone6_plus.size.width / designResolutionSize.width);
+    }else {
+        director->setContentScaleFactor(MIN(iphone5.size.height / designResolutionSize.height,
+                                            iphone5.size.width / designResolutionSize.width));
     }
-    
+    director->setContentScaleFactor(contentScaleFactor);
 
     // turn on display FPS
     director->setDisplayStats(true);

@@ -40,7 +40,6 @@ public:
     virtual void onTouchMoved(Touch *touch, Event *event);
     
 private:
-    LayerColor* backgroundLayer;
     Sprite *background;
     LayerColor* layerColor;// 遮挡不能连线的元素
     Sprite* deadSprite;// 标记死亡的怪物

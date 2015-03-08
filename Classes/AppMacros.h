@@ -9,7 +9,7 @@
 #define DESIGN_RESOLUTION_1080X1920  3
 
 /* If you want to switch design resolution, change next line */
-#define TARGET_DESIGN_RESOLUTION_SIZE  DESIGN_RESOLUTION_750X1334
+#define TARGET_DESIGN_RESOLUTION_SIZE  DESIGN_RESOLUTION_640X1136
 
 typedef struct tagResource {
     cocos2d::Size size;
@@ -23,7 +23,6 @@ typedef struct tagResource {
 static Resource iphone4 = { cocos2d::Size(640, 960) };
 static Resource iphone5 = { cocos2d::Size(640, 1136) };
 static Resource iphone6 = { cocos2d::Size(750, 1334) };
-//static Resource iphone6_plus = { cocos2d::Size(1080, 1920) };
 static Resource iphone6_plus = { cocos2d::Size(1242, 2208) };
 
 #if (TARGET_DESIGN_RESOLUTION_SIZE == DESIGN_RESOLUTION_640X960)

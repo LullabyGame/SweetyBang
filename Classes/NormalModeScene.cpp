@@ -64,11 +64,6 @@ bool NormalModeScene::initLayer() {
     Point origin = Director::getInstance()->getVisibleOrigin();
     
     // 添加背景层
-//    backgroundLayer = LayerColor::create(Color4B(238, 222, 170, 255));
-//    backgroundLayer->setPosition(Point(origin.x, origin.y));
-//    backgroundLayer->setContentSize(Size(visiableSize.width, visiableSize.height));
-//    this->addChild(backgroundLayer);
-    
     background = Sprite::create("img/background.png");
     background->setAnchorPoint(Point::ZERO);
     background->setPosition(Point::ZERO);
