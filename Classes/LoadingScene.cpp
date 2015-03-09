@@ -30,20 +30,21 @@ bool LoadingScene::init() {
         return false;
     }
     
-    // 添加logo
-    auto *logo = Sprite::create("img/lullaby.jpg");
+    /* 添加logo */
+    auto *logo = Sprite::create(LOGO_IMAGE);
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
     logo->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+    logo->setScale(itemScale, itemScale);
     this->addChild(logo);
     
-    // 预读取音乐和音效
+    /* 预读取音乐和音效 */
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/Ka-Ching.wav");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/got.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/yang.mp3");
     
-    // 初始化素材图片
-    Director::getInstance()->getTextureCache()->addImageAsync("img/sweety.png", CC_CALLBACK_1(LoadingScene::loadingCallBack, this));
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("img/sweety.plist");
+    /* 初始化素材图片 */
+    Director::getInstance()->getTextureCache()->addImageAsync(MAIN_TEXTURE_IMAGE, CC_CALLBACK_1(LoadingScene::loadingCallBack, this));
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile(MAIN_TEXTURE_CONFIG);
 
     return true;
 }

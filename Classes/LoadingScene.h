@@ -5,7 +5,7 @@
 //  Loading Scene定义
 //
 //
-
+#pragma once
 #ifndef __LittleKnight__LoadingScene__
 #define __LittleKnight__LoadingScene__
 

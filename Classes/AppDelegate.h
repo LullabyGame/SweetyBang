@@ -1,7 +1,11 @@
+#pragma once
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
 #include "cocos2d.h"
+#include "LoadingScene.h"
+#include "Settings.h"
+#include "AppMacros.h"
 
 /**
 @brief    The cocos2d Application.

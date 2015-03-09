@@ -5,7 +5,7 @@
 //  Line对象的定义
 //
 //
-
+#pragma once
 #ifndef __LittleKnight__LineSprite__
 #define __LittleKnight__LineSprite__
 

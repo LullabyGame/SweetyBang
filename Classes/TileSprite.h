@@ -5,7 +5,7 @@
 //  Tile元素定义
 //
 //
-
+#pragma once
 #ifndef __LittleKnight__TileSprite__
 #define __LittleKnight__TileSprite__
 

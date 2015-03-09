@@ -10,6 +10,7 @@
 #define __LittleKnight__NormalModeScene__
 
 #include "cocos2d.h"
+#include "AppMacros.h"
 #include "TileSprite.h"
 #include "ItemSprite.h"
 #include "json/rapidjson.h"
@@ -40,20 +41,21 @@ public:
     virtual void onTouchMoved(Touch *touch, Event *event);
     
 private:
+    
+    /* VARIABLES */
     Sprite *background;
-    LayerColor* layerColor;// 遮挡不能连线的元素
-    Sprite* deadSprite;// 标记死亡的怪物
+    int level = 0;
+    
     TileSprite* tileMatrix[MATRIX_WIDTH][MATRIX_HEIGHT] = {0};
     TileSprite* lastPaintedTile;
     cocos2d::Vector<TileSprite*> linePassedTiles;
     cocos2d::Vector<LineSprite*> lines;
     cocos2d::Vector<LayerColor*> layerColors;
-    cocos2d::Vector<Sprite*> diedSprites;
-    int level = 0;
     
     int remainsMonster;
     Label* remainsMonsterLabel;
     
+    /* FUNCTIONS */
     void initTilesAndItems();
     TileSprite* getOnTouchTile(float onTouchX, float onTouchY);// 查询当前触摸点在Tile矩阵中的位置
     void darwLine(TileSprite* beginTile, TileSprite* endTile);
@@ -61,7 +63,6 @@ private:
     void deleteDepetitionLine(TileSprite* onTouchTile);// 当选择到已经经过的格子，删除该格子后的线段
     void fallDownItems();
     void fillTiles();
-    void markDeath(cocos2d::Vector<TileSprite*> tiles);// 标记怪物死亡
     
     void mainMenuCallback(Ref* sender);
     void addTouchListeners();

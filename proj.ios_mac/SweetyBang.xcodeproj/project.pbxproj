@@ -52,6 +52,8 @@
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
 		C1784E1CAA38CBA0FA16AA9B /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 606A4975BBA2A15E7A8EC014 /* libcocos2d iOS.a */; };
+		CF7C62F91AAE11A600027AA5 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF7C62F81AAE11A600027AA5 /* Settings.cpp */; };
+		CF7C62FA1AAE11A600027AA5 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF7C62F81AAE11A600027AA5 /* Settings.cpp */; };
 		CFBDCE561AA84C8300650DE5 /* ItemSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFBDCE471AA84C8300650DE5 /* ItemSprite.cpp */; };
 		CFBDCE571AA84C8300650DE5 /* ItemSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFBDCE471AA84C8300650DE5 /* ItemSprite.cpp */; };
 		CFBDCE581AA84C8300650DE5 /* LineSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFBDCE491AA84C8300650DE5 /* LineSprite.cpp */; };
@@ -118,6 +120,7 @@
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CF7C62F81AAE11A600027AA5 /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
 		CFBDCE441AA84C8300650DE5 /* AppMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppMacros.h; sourceTree = "<group>"; };
 		CFBDCE471AA84C8300650DE5 /* ItemSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemSprite.cpp; sourceTree = "<group>"; };
 		CFBDCE481AA84C8300650DE5 /* ItemSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemSprite.h; sourceTree = "<group>"; };
@@ -256,6 +259,7 @@
 				CFBDCE4F1AA84C8300650DE5 /* NormalModeScene.cpp */,
 				CFBDCE501AA84C8300650DE5 /* NormalModeScene.h */,
 				CFBDCE511AA84C8300650DE5 /* Settings.h */,
+				CF7C62F81AAE11A600027AA5 /* Settings.cpp */,
 				CFBDCE521AA84C8300650DE5 /* TileSprite.cpp */,
 				CFBDCE531AA84C8300650DE5 /* TileSprite.h */,
 			);
@@ -445,6 +449,7 @@
 				CFBDCE5E1AA84C8300650DE5 /* NormalModeScene.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				CF7C62F91AAE11A600027AA5 /* Settings.cpp in Sources */,
 				CFBDCE5A1AA84C8300650DE5 /* LoadingScene.cpp in Sources */,
 				CFBDCE601AA84C8300650DE5 /* TileSprite.cpp in Sources */,
 				CFBDCE581AA84C8300650DE5 /* LineSprite.cpp in Sources */,
@@ -458,6 +463,7 @@
 			files = (
 				CFBDCE591AA84C8300650DE5 /* LineSprite.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				CF7C62FA1AAE11A600027AA5 /* Settings.cpp in Sources */,
 				CFBDCE611AA84C8300650DE5 /* TileSprite.cpp in Sources */,
 				CFBDCE5D1AA84C8300650DE5 /* MainMenuScene.cpp in Sources */,
 				CFBDCE571AA84C8300650DE5 /* ItemSprite.cpp in Sources */,

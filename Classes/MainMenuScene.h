@@ -5,7 +5,7 @@
 //  主菜单Scene定义
 //
 //
-
+#pragma once
 #ifndef __LittleKnight__MainMenuScene__
 #define __LittleKnight__MainMenuScene__
 

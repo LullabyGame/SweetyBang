@@ -106,10 +106,9 @@ void TileSprite::setItem(ItemSprite* item) {
     if (item == NULL) {
         this->item = NULL;
     }else {
-        float scale = ((float)TILE_SIDE_LENGTH / TEXTURE_SIDE_WIDTH) * SCALE_RATE;
         this->item = item;
         this->item->setAnchorPoint(Point(0.5, 0.5));
         this->item->setPosition(Vec2(this->getWidth() / 2, this->getHeight() / 2));
-        this->item->setScale(scale, scale);
+        this->item->setScale(itemScale, itemScale);// 设定缩放比率
     }
 }

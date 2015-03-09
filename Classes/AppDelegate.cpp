@@ -1,6 +1,4 @@
 #include "AppDelegate.h"
-#include "LoadingScene.h"
-#include "AppMacros.h"
 
 USING_NS_CC;
 
@@ -19,19 +17,17 @@ void AppDelegate::initGLContextAttrs() {
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
-    // initialize director
+    /* 初始化Director */
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
         glview = GLViewImpl::create("My Game");
         director->setOpenGLView(glview);
     }
-    
     Size frameSize = glview->getFrameSize();
-
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::FIXED_WIDTH);
     
-    // set content scale factor
+    /* 设定自适应缩放比率 */
     float contentScaleFactor = 0;
     if (frameSize.height == iphone4.size.height && frameSize.width == iphone4.size.width) {
         contentScaleFactor = MIN(designResolutionSize.height / iphone4.size.height, designResolutionSize.width / iphone4.size.width);
@@ -45,20 +41,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
         contentScaleFactor = MIN(iphone5.size.height / designResolutionSize.height, iphone5.size.width / designResolutionSize.width);
     }
     director->setContentScaleFactor(contentScaleFactor);
+    
+    /* 初始化全局变量 */
+    tileSideLength = director->getWinSize().width / 8;// Tile边长 = 设计分辨率宽 / 8
+    bottomPadding = director->getWinSize().height / 10;// 下边距 = 设计分辨率高 / 10
+    leftPadding = (director->getWinSize().width - (tileSideLength * MATRIX_WIDTH) - (TILE_GAP * (MATRIX_WIDTH - 1))) / 2;// 左边距 = (设计分辨率宽 - (Tile边长 * 横轴Tile数) - (Tile间隙长 * (横轴Tile数 - 1))) / 2
+    itemScale = ((float)TEXTURE_SIDE_WIDTH / frameSize.width) * SCALE_RATE;// item与tile的转换率
 
-    // turn on display FPS
-    director->setDisplayStats(true);
-
-    // set FPS. the default value is 1.0/60 if you don't call this
-    director->setAnimationInterval(1.0 / 60);
-
+    /* 设定Director其他属性 */
+    director->setDisplayStats(true);// turn on display FPS
+    director->setAnimationInterval(1.0 / 60);// set FPS. the default value is 1.0/60 if you don't call this
     FileUtils::getInstance()->addSearchPath("res");
 
-    // create a scene. it's an autorelease object
-    auto scene = LoadingScene::createScene();
-
-    // run
-    director->runWithScene(scene);
+    /* 加载场景 */
+    auto scene = LoadingScene::createScene();// create a scene. it's an autorelease object
+    director->runWithScene(scene);// run
 
     return true;
 }

@@ -5,7 +5,7 @@
 //  Item元素定义
 //
 //
-
+#pragma once
 #ifndef __LittleKnight__ItemSprite__
 #define __LittleKnight__ItemSprite__
 
