@@ -6,10 +6,10 @@
 #define DESIGN_RESOLUTION_640X960    0
 #define DESIGN_RESOLUTION_640X1136   1
 #define DESIGN_RESOLUTION_750X1334   2
-#define DESIGN_RESOLUTION_1080X1920  3
+#define DESIGN_RESOLUTION_1242X2208  3
 
 /* If you want to switch design resolution, change next line */
-#define TARGET_DESIGN_RESOLUTION_SIZE  DESIGN_RESOLUTION_1242X2208
+#define TARGET_DESIGN_RESOLUTION_SIZE DESIGN_RESOLUTION_640X1136
 
 typedef struct tagResource {
     cocos2d::Size size;
@@ -31,8 +31,6 @@ static cocos2d::Size designResolutionSize = cocos2d::Size(640, 960);
 static cocos2d::Size designResolutionSize = cocos2d::Size(640, 1136);
 #elif (TARGET_DESIGN_RESOLUTION_SIZE == DESIGN_RESOLUTION_750X1334)
 static cocos2d::Size designResolutionSize = cocos2d::Size(750, 1334);
-//#elif (TARGET_DESIGN_RESOLUTION_SIZE == DESIGN_RESOLUTION_1080X1920)
-//static cocos2d::Size designResolutionSize = cocos2d::Size(1080, 1920);
 #elif (TARGET_DESIGN_RESOLUTION_SIZE == DESIGN_RESOLUTION_1242X2208)
 static cocos2d::Size designResolutionSize = cocos2d::Size(1242, 2208);
 #else
