@@ -9,7 +9,7 @@
 #define DESIGN_RESOLUTION_1080X1920  3
 
 /* If you want to switch design resolution, change next line */
-#define TARGET_DESIGN_RESOLUTION_SIZE  DESIGN_RESOLUTION_640X1136
+#define TARGET_DESIGN_RESOLUTION_SIZE  DESIGN_RESOLUTION_1242X2208
 
 typedef struct tagResource {
     cocos2d::Size size;
