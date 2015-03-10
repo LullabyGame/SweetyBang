@@ -1,6 +1,6 @@
 //
 //  LineSprite.cpp
-//  LittleKnight
+//  SweetBang
 //
 //  Line对象的实现
 //

@@ -1,6 +1,6 @@
 //
 //  LoadingScene.h
-//  LittleKnight
+//  SweetBang
 //
 //  Loading Scene定义
 //

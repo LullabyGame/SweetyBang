@@ -1,6 +1,6 @@
 //
 //  NormalModeScene.cpp
-//  LittleKnight
+//  SweetBang
 //
 //  普通模式Scene实现
 //

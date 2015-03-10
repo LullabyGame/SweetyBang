@@ -1,6 +1,6 @@
 //
 //  LoadingScene.cpp
-//  LittleKnight
+//  SweetBang
 //
 //  Loading Scene实现
 //

@@ -1,6 +1,6 @@
 //
 //  NormalModeScene.h
-//  LittleKnight
+//  SweetBang
 //
 //  普通模式Scene定义
 //

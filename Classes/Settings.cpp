@@ -2,12 +2,12 @@
 //  Settings.cpp
 //  SweetyBang
 //
-//  Created by JinTongyao on 3/10/15.
 //
 //
 
 #include "Settings.h"
 
+/* 全局变量定义 */
 int levelProgress = 0;
 float leftPadding = 0;
 float bottomPadding = 0;

@@ -1,6 +1,6 @@
 //
 //  ItemSprite.h
-//  LittleKnight
+//  SweetBang
 //
 //  Item元素定义
 //
@@ -23,29 +23,12 @@ enum BasicItemType {
     SugarCookie
 };
 
-// tile中的Boss元素类型
-enum BossItemType {
-    boss1,
-    boss2,
-    boss3
-};
-
-// 技能元素类型
-enum SkillItemType {
-    skill1,
-    skill2,
-    skill3,
-    skill4,
-    skill5
-};
-
 class ItemSprite : public Sprite {
     
 public:
     CREATE_FUNC(ItemSprite);
     virtual bool init();
     static ItemSprite* createBasicItem(BasicItemType itemType);
-    static ItemSprite* createBossItem(BossItemType itemType);
     
     int getItemType();
     void setItemType(int itemType);

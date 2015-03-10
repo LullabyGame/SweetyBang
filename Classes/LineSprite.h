@@ -1,6 +1,6 @@
 //
 //  LineSprite.h
-//  LittleKnight
+//  SweetBang
 //
 //  Line对象的定义
 //
@@ -19,7 +19,7 @@ class LineSprite : public Sprite {
 public:
     CREATE_FUNC(LineSprite);
     virtual bool init();
-    static LineSprite* createLine(TileSprite* beginTile, TileSprite* endTile);
+    static LineSprite* createLine(TileSprite* beginTile, TileSprite* endTile);// 创建线段
     
     TileSprite* getBeginTile();
     void setBeginTile(TileSprite* beginTile);

@@ -1,6 +1,6 @@
 //
 //  ItemSprite.cpp
-//  LittleKnight
+//  SweetBang
 //
 //  Created by JinTongyao on 1/22/15.
 //
@@ -17,6 +17,7 @@ bool ItemSprite::init() {
     }
     return true;
 }
+
 
 /**
  *  创建基础类Item
@@ -51,37 +52,6 @@ ItemSprite* ItemSprite::createBasicItem(BasicItemType itemType) {
             case BasicItemType::SugarCookie:
                 item->initWithSpriteFrameName("SugarCookie.png");
                 item->setItemType(BasicItemType::SugarCookie);
-                break;
-        }
-        item->autorelease();
-        return item;
-    }
-    CC_SAFE_DELETE(item);
-    return NULL;
-}
-
-
-/**
- *  创建Boss类Item
- *
- *  @param itemType BasicItem类型
- *  @return 创建的Item元素
- */
-ItemSprite* ItemSprite::createBossItem(BossItemType itemType) {
-    ItemSprite *item = new ItemSprite();
-    if (item && item->init()) {
-        switch (itemType) {
-            case BossItemType::boss1:
-                item->initWithSpriteFrameName("boss-1.png");
-                item->setItemType(BossItemType::boss1);
-                break;
-            case BossItemType::boss2:
-                item->initWithSpriteFrameName("boss-2.png");
-                item->setItemType(BossItemType::boss2);
-                break;
-            case BossItemType::boss3:
-                item->initWithSpriteFrameName("boss-3.png");
-                item->setItemType(BossItemType::boss3);
                 break;
         }
         item->autorelease();

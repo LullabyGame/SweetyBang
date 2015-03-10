@@ -1,6 +1,6 @@
 //
 //  MainMenuScene.h
-//  LittleKnight
+//  SweetBang
 //
 //  主菜单Scene定义
 //

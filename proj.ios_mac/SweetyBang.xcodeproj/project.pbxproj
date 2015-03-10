@@ -250,18 +250,18 @@
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				CFBDCE471AA84C8300650DE5 /* ItemSprite.cpp */,
 				CFBDCE481AA84C8300650DE5 /* ItemSprite.h */,
-				CFBDCE491AA84C8300650DE5 /* LineSprite.cpp */,
-				CFBDCE4A1AA84C8300650DE5 /* LineSprite.h */,
 				CFBDCE4B1AA84C8300650DE5 /* LoadingScene.cpp */,
 				CFBDCE4C1AA84C8300650DE5 /* LoadingScene.h */,
 				CFBDCE4D1AA84C8300650DE5 /* MainMenuScene.cpp */,
 				CFBDCE4E1AA84C8300650DE5 /* MainMenuScene.h */,
 				CFBDCE4F1AA84C8300650DE5 /* NormalModeScene.cpp */,
 				CFBDCE501AA84C8300650DE5 /* NormalModeScene.h */,
-				CFBDCE511AA84C8300650DE5 /* Settings.h */,
-				CF7C62F81AAE11A600027AA5 /* Settings.cpp */,
 				CFBDCE521AA84C8300650DE5 /* TileSprite.cpp */,
 				CFBDCE531AA84C8300650DE5 /* TileSprite.h */,
+				CFBDCE491AA84C8300650DE5 /* LineSprite.cpp */,
+				CFBDCE4A1AA84C8300650DE5 /* LineSprite.h */,
+				CFBDCE511AA84C8300650DE5 /* Settings.h */,
+				CF7C62F81AAE11A600027AA5 /* Settings.cpp */,
 			);
 			name = Classes;
 			path = ../Classes;

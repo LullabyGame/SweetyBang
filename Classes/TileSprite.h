@@ -1,6 +1,6 @@
 //
 //  TileSprite.h
-//  LittleKnight
+//  SweetBang
 //
 //  Tile元素定义
 //

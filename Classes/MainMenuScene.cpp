@@ -1,6 +1,6 @@
 //
 //  MainMenuScene.cpp
-//  LittleKnight
+//  SweetBang
 //
 //  主菜单Scene实现
 //
@@ -33,15 +33,15 @@ bool MainMenuScene::init() {
     
     Size visiableSize = Director::getInstance()->getVisibleSize();
     
-    // 背景
+    /* 添加背景 */
     auto background = Sprite::create("img/background.png");
     background->setAnchorPoint(Point::ZERO);
     background->setPosition(Point::ZERO);
     this->addChild(background);
 
-    // NormalMode按钮
+    /* 添加NormalMode按钮 */
     auto nomrmalModeLable = MenuItemLabel::create(LabelTTF::create("Normal Mode", "Futura.ttf", 32), CC_CALLBACK_1(MainMenuScene::menuNormalModeCallback, this));
-    nomrmalModeLable->setTag(0);
+    nomrmalModeLable->setTag(1);// 默认加载第一关
     nomrmalModeLable->setAnchorPoint(Point(0, 0));
     nomrmalModeLable->setPosition(Point(visiableSize.width / 2 - 80, visiableSize.height / 2));
     auto normalModeMenu = Menu::create(nomrmalModeLable, NULL);
@@ -59,7 +59,7 @@ bool MainMenuScene::init() {
  */
 void MainMenuScene::menuNormalModeCallback(Ref *sender) {
     MenuItem* selectedMenu = (MenuItem*) sender;
-    int tag = selectedMenu->getTag();
+    int tag = selectedMenu->getTag();// 使用tag记录关卡
     Scene* normalModeScene = NormalModeScene::createScene(tag);
     TransitionFlipX *transition = TransitionFlipX::create(1.2, normalModeScene);
     Director::getInstance()->replaceScene(transition);

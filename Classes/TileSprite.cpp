@@ -21,7 +21,6 @@ bool TileSprite::init() {
 
 /**
  *  创建Tile
- *
  *  @param posX   x轴坐标
  *  @param posY   y轴坐标
  *  @param width  Tile宽
