@@ -80,19 +80,7 @@ bool NormalModeScene::initLayer() {
     mainMenu->setPosition(0, 0);
     background->addChild(mainMenu);
     
-    /* 添加当前分数/目标分数显示 TODO */
-    std::stringstream levelSS;
-    levelSS << this->getLevel();
-    std::string levelName = "level/Level_" + levelSS.str() + ".json";
-    if(!FileUtils::getInstance()->isFileExist(levelName)) {
-        CCLOG("json file is not find");
-        return false;
-    }
-    std::string data = FileUtils::getInstance()->getStringFromFile(levelName);
-    rapidjson::Document doc;
-    doc.Parse<rapidjson::kParseDefaultFlags>(data.c_str());
-    rapidjson::Value& targetMonster = doc["targetMonster"];
-    remainsMonster = targetMonster.GetInt();
+    /* 生成目标分数 */
     remainsMonsterLabel = Label::create(CCString::createWithFormat("%d",remainsMonster)->_string, "American Typewriter.ttf", 40);
     remainsMonsterLabel->setAnchorPoint(Point(0.1, 0.1));
     remainsMonsterLabel->setPosition((Point(visiableSize.width / 2, visiableSize.height - 150)));
@@ -103,6 +91,29 @@ bool NormalModeScene::initLayer() {
     
     /* 添加事件监听 */
     addTouchListeners();
+    
+    return true;
+}
+
+
+/**
+ * 读取关卡信息
+ */
+bool NormalModeScene::initStageInfo() {
+    std::stringstream stageStream;
+    stageStream << this->getLevel();
+    std::string stageName = STAGE_FILE_PATH + STAGE_FILE_PREFIX + stageStream.str() + ".json";
+    
+    if(!FileUtils::getInstance()->isFileExist(stageName)) {
+        CCLOG("json file is not find");
+        return false;
+    }
+    
+    std::string data = FileUtils::getInstance()->getStringFromFile(stageName);
+    rapidjson::Document doc;
+    doc.Parse<rapidjson::kParseDefaultFlags>(data.c_str());
+    rapidjson::Value& targetMonster = doc["targetMonster"];
+    remainsMonster = targetMonster.GetInt();
     
     return true;
 }

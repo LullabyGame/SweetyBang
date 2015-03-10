@@ -26,6 +26,9 @@ const std::string BACKGROUND_IMAGE = "img/background.png";
 const std::string MAIN_TEXTURE_IMAGE = "img/sweety.png";
 const std::string MAIN_TEXTURE_CONFIG = "img/sweety.plist";
 
+const std::string STAGE_FILE_PATH = "stage/";
+const std::string STAGE_FILE_PREFIX = "Stage_";
+
 
 /* 全局变量声明 */
 extern int levelProgress;// 当前用户的关卡进度

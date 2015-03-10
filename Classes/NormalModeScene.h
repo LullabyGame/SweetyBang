@@ -44,7 +44,10 @@ private:
     
     /* VARIABLES */
     Sprite *background;
-    int level = 0;
+    
+    int stage = 0;// 关卡号
+    int targetMoves;
+    int targetScore;
     
     TileSprite* tileMatrix[MATRIX_WIDTH][MATRIX_HEIGHT] = {0};
     TileSprite* lastPaintedTile;
@@ -56,6 +59,7 @@ private:
     Label* remainsMonsterLabel;
     
     /* FUNCTIONS */
+    bool initStageInfo();
     void initTilesAndItems();
     TileSprite* getOnTouchTile(float onTouchX, float onTouchY);// 查询当前触摸点在Tile矩阵中的位置
     void darwLine(TileSprite* beginTile, TileSprite* endTile);
