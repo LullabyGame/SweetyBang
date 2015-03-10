@@ -33,8 +33,8 @@ public:
     static NormalModeScene* createLayer(int level);
     bool initLayer();
     
-    int getLevel();
-    void setLevel(int level);
+    int getStage();
+    void setStage(int level);
     
     virtual bool onTouchBegan(Touch *touch, Event *event);
     virtual void onTouchEnded(Touch *touch, Event *event);

@@ -43,11 +43,11 @@ bool NormalModeScene::init() {
  *  @param level 当前关卡
  *  @return
  */
-NormalModeScene* NormalModeScene::createLayer(int level) {
+NormalModeScene* NormalModeScene::createLayer(int stage) {
     NormalModeScene *normalMode = new NormalModeScene();
     if (normalMode && normalMode->init()) {
         normalMode->autorelease();
-        normalMode->setLevel(level);
+        normalMode->setStage(stage);
         normalMode->initLayer();
         return normalMode;
     }
@@ -81,10 +81,10 @@ bool NormalModeScene::initLayer() {
     background->addChild(mainMenu);
     
     /* 生成目标分数 */
-    remainsMonsterLabel = Label::create(CCString::createWithFormat("%d",remainsMonster)->_string, "American Typewriter.ttf", 40);
-    remainsMonsterLabel->setAnchorPoint(Point(0.1, 0.1));
-    remainsMonsterLabel->setPosition((Point(visiableSize.width / 2, visiableSize.height - 150)));
-    background->addChild(remainsMonsterLabel);
+//    remainsMonsterLabel = Label::create(CCString::createWithFormat("%d",remainsMonster)->_string, "American Typewriter.ttf", 40);
+//    remainsMonsterLabel->setAnchorPoint(Point(0.1, 0.1));
+//    remainsMonsterLabel->setPosition((Point(visiableSize.width / 2, visiableSize.height - 150)));
+//    background->addChild(remainsMonsterLabel);
     
     /* 初始化Tile和Item */
     initTilesAndItems();
@@ -101,7 +101,7 @@ bool NormalModeScene::initLayer() {
  */
 bool NormalModeScene::initStageInfo() {
     std::stringstream stageStream;
-    stageStream << this->getLevel();
+    stageStream << this->getStage();
     std::string stageName = STAGE_FILE_PATH + STAGE_FILE_PREFIX + stageStream.str() + ".json";
     
     if(!FileUtils::getInstance()->isFileExist(stageName)) {
@@ -112,8 +112,8 @@ bool NormalModeScene::initStageInfo() {
     std::string data = FileUtils::getInstance()->getStringFromFile(stageName);
     rapidjson::Document doc;
     doc.Parse<rapidjson::kParseDefaultFlags>(data.c_str());
-    rapidjson::Value& targetMonster = doc["targetMonster"];
-    remainsMonster = targetMonster.GetInt();
+//    rapidjson::Value& targetMonster = doc["targetMonster"];
+//    remainsMonster = targetMonster.GetInt();
     
     return true;
 }
@@ -123,15 +123,15 @@ bool NormalModeScene::initStageInfo() {
  * 初始化Tile和Item
  */
 void NormalModeScene::initTilesAndItems() {
-    std::stringstream levelSS;
-    levelSS << this->getLevel();
-    std::string levelName = "level/Level_" + levelSS.str() + ".json";
-    if(!FileUtils::getInstance()->isFileExist(levelName)) {
+    std::stringstream stageStream;
+    stageStream << this->getStage();
+    std::string stageName = STAGE_FILE_PATH + STAGE_FILE_PREFIX + stageStream.str() + ".json";
+    if(!FileUtils::getInstance()->isFileExist(stageName)) {
         CCLOG("json file is not find");
         return;
     }
     
-    std::string data = FileUtils::getInstance()->getStringFromFile(levelName);
+    std::string data = FileUtils::getInstance()->getStringFromFile(stageName);
     rapidjson::Document doc;
     doc.Parse<rapidjson::kParseDefaultFlags>(data.c_str());
     rapidjson::Value& tiles = doc["tiles"];
@@ -384,10 +384,10 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
     }
 }
 
-int NormalModeScene::getLevel() {
-    return this->level;
+int NormalModeScene::getStage() {
+    return this->stage;
 }
 
-void NormalModeScene::setLevel(int level) {
-    this->level = level;
+void NormalModeScene::setStage(int stage) {
+    this->stage = stage;
 }
