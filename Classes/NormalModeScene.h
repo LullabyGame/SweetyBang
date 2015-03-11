@@ -65,7 +65,7 @@ private:
     /* FUNCTIONS */
     void loadStageInfo();
     void initTilesAndItems(rapidjson::Value& tileInfo);
-    void initToolBar();
+    void initMenuBar();
     
     TileSprite* getOnTouchTile(float onTouchX, float onTouchY);// 查询当前触摸点在Tile矩阵中的位置
     void darwLine(TileSprite* beginTile, TileSprite* endTile);

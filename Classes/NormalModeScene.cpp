@@ -75,7 +75,7 @@ bool NormalModeScene::initLayer() {
     loadStageInfo();// 读取关卡信息
     
     /* 初始化工具栏 */
-    initToolBar();
+    initMenuBar();
     
     /* 添加事件监听 */
     addTouchListeners();
@@ -152,8 +152,10 @@ void NormalModeScene::initTilesAndItems(rapidjson::Value& tileInfo) {
     }
 }
 
-
-void NormalModeScene::initToolBar() {
+/**
+ * 初始化菜单栏
+ */
+void NormalModeScene::initMenuBar() {
     Size visiableSize = Director::getInstance()->getVisibleSize();
     
     /* 添加"Main Menu"按钮 */
@@ -235,6 +237,12 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
     return true;
 }
 
+/**
+ *  onTouchMoved监听
+ *
+ *  @param touch
+ *  @param event
+ */
 void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
     Point touchPoint = touch->getLocation();
     TileSprite* onTouchTile = getOnTouchTile(touchPoint.x, touchPoint.y);
@@ -286,6 +294,12 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
     }
 }
 
+/**
+ *  onTouchEnded监听
+ *
+ *  @param touch
+ *  @param event
+ */
 void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
     // remove lines
     for(auto line : lines) {
@@ -333,6 +347,10 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
     linePassedTiles.clear();
 }
 
+
+/**
+ *  item下落处理
+ */
 void NormalModeScene::fallDownItems() {
     for (int i = 0; i < MATRIX_WIDTH; i++) {
         int removedItem4Col = 0;
@@ -357,6 +375,10 @@ void NormalModeScene::fallDownItems() {
     }
 }
 
+
+/**
+ *  填补空的tile
+ */
 void NormalModeScene::fillTiles() {
     for (int i = 0; i < MATRIX_WIDTH; i++) {
         for (int j = 0; j < MATRIX_HEIGHT; j++) {
@@ -372,6 +394,14 @@ void NormalModeScene::fillTiles() {
 }
 
 
+/**
+ *  查询当前触摸点的tile
+ *
+ *  @param onTouchX 触摸点横坐标
+ *  @param onTouchY 触摸点纵坐标
+ *
+ *  @return 选中的Tile
+ */
 TileSprite* NormalModeScene::getOnTouchTile(float onTouchX, float onTouchY) {
     int leftRange = leftPadding;
     int rightRange = leftPadding + (MATRIX_WIDTH * tileSideLength) + ((MATRIX_WIDTH - 1) * TILE_GAP);
@@ -397,6 +427,14 @@ TileSprite* NormalModeScene::getOnTouchTile(float onTouchX, float onTouchY) {
 }
 
 
+/**
+ *  判断相邻的两个Tile中的Item是否为同一类型
+ *
+ *  @param lastTile    上一个Tile
+ *  @param currentTile 当前Tile
+ *
+ *  @return
+ */
 bool NormalModeScene::isSameItemType(TileSprite* lastTile, TileSprite* currentTile) {
     if (lastTile->getItem() == NULL || currentTile->getItem() == NULL) {
         return false;
@@ -410,13 +448,11 @@ bool NormalModeScene::isSameItemType(TileSprite* lastTile, TileSprite* currentTi
 }
 
 
-void NormalModeScene::mainMenuCallback(Ref *sender) {
-    auto scene = MainMenuScene::createScene();
-    TransitionFlipX *transition = TransitionFlipX::create(1.2, scene);
-    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-    Director::getInstance()->replaceScene(transition);
-}
-
+/**
+ *  删除重复的线
+ *
+ *  @param onTouchTile <#onTouchTile description#>
+ */
 void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
     for (auto sprite : lines) {
         if (sprite->getBeginTile() == onTouchTile) {
@@ -427,6 +463,19 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
             break;
         }
     }
+}
+
+
+/**
+ *  返回主菜单(Main Menu按钮回调)
+ *
+ *  @param sender <#sender description#>
+ */
+void NormalModeScene::mainMenuCallback(Ref *sender) {
+    auto scene = MainMenuScene::createScene();
+    TransitionFlipX *transition = TransitionFlipX::create(1.2, scene);
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+    Director::getInstance()->replaceScene(transition);
 }
 
 int NormalModeScene::getStage() {
