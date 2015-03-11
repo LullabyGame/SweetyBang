@@ -46,7 +46,7 @@ private:
     Sprite *background;
     
     int stage = 0;// 关卡号
-    int targetMoves;
+    int remainMoves;
     int targetScore;
     int currentMoves = 1;
     int currentScore = 0;
@@ -60,7 +60,7 @@ private:
     Label* targetScoreLabel;
     Label* currentScoreLabel;
     Label* targetMoveLabel;
-    Label* currentMoveLabel;
+    Label* remainMovesLabel;
     
     /* FUNCTIONS */
     void loadStageInfo();
@@ -76,6 +76,7 @@ private:
     void fillTiles();
     
     void mainMenuCallback(Ref* sender);
+    void back2StageSelectScene();
     void addTouchListeners();
     
 };

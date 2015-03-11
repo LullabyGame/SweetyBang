@@ -109,7 +109,7 @@ void NormalModeScene::loadStageInfo() {
     rapidjson::Value& stageScore = doc["score"];
     rapidjson::Value& stageMove = doc["move"];
     this->targetScore = stageScore.GetInt();
-    this->targetMoves = stageMove.GetInt();
+    this->remainMoves = stageMove.GetInt();
 }
 
 
@@ -137,6 +137,8 @@ void NormalModeScene::initTilesAndItems(rapidjson::Value& tileInfo) {
                         TileSprite *tile = TileSprite::createTile(posX ,posY, tileSideLength, tileSideLength);
                         tile->setItem(item);
                         tile->addChild(item);
+                        ActionInterval *fadein = FadeIn::create(5);
+                        item->runAction(fadein);
                         
                         // add tile into matrix
                         tileMatrix[col][tileInfo.Size() - 1 - row] = tile;
@@ -162,48 +164,49 @@ void NormalModeScene::initMenuBar() {
     auto mainMenuLabel = MenuItemLabel::create(LabelTTF::create("Main Menu", "Futura.ttf", 32), CC_CALLBACK_1(NormalModeScene::mainMenuCallback, this));
     mainMenuLabel->setColor(Color3B(0, 0, 0));
     mainMenuLabel->setAnchorPoint(Point::ZERO);
-    mainMenuLabel->setPosition(Point(visiableSize.width / 2 - 80, visiableSize.height - 90));
+    mainMenuLabel->setPosition(Point(visiableSize.width / 2 - 80, visiableSize.height - 60));
     auto mainMenu = Menu::create(mainMenuLabel, NULL);
     mainMenu->setPosition(0, 0);
     background->addChild(mainMenu);
     
-    /* 设定步数显示 */
-    auto moveLabel = MenuItemLabel::create(LabelTTF::create("Move:", "Futura.ttf", 32));
-    moveLabel->setColor(Color3B(0, 0, 0));
-    moveLabel->setAnchorPoint(Point::ZERO);
-    moveLabel->setPosition(Point(visiableSize.width / 8, visiableSize.height - 150));
-    background->addChild(moveLabel);
-    
-    currentMoveLabel = Label::create(CCString::createWithFormat("%d",currentMoves)->_string, "American Typewriter.ttf", 40);
-    currentMoveLabel->setTextColor(Color4B(0, 0, 0, 0));
-    currentMoveLabel->setAnchorPoint(Point(Point::ZERO));
-    currentMoveLabel->setPosition((Point(visiableSize.width / 8 + 100, visiableSize.height - 150)));
-    background->addChild(currentMoveLabel);
-    
-    auto moveSplitLabel = MenuItemLabel::create(LabelTTF::create("/", "Futura.ttf", 32));
-    moveSplitLabel->setColor(Color3B(0, 0, 0));
-    moveSplitLabel->setAnchorPoint(Point::ZERO);
-    moveSplitLabel->setPosition(Point(visiableSize.width / 8 + 150, visiableSize.height - 150));
-    background->addChild(moveSplitLabel);
-    
-    targetMoveLabel = Label::create(CCString::createWithFormat("%d",targetMoves)->_string, "American Typewriter.ttf", 40);
-    targetMoveLabel->setTextColor(Color4B(0, 0, 0, 0));
-    targetMoveLabel->setAnchorPoint(Point(Point::ZERO));
-    targetMoveLabel->setPosition((Point(visiableSize.width / 8 + 170, visiableSize.height - 150)));
-    background->addChild(targetMoveLabel);
-    
-    /* 设定分数显示 */
-    auto scoreLabel = MenuItemLabel::create(LabelTTF::create("Score:", "Futura.ttf", 32));
-    scoreLabel->setColor(Color3B(0, 0, 0));
-    scoreLabel->setAnchorPoint(Point::ZERO);
-    scoreLabel->setPosition(Point(visiableSize.width / 2 + 20, visiableSize.height - 150));
-    background->addChild(scoreLabel);
+    /* 设定目标分数显示 */
+    auto targetLabel = MenuItemLabel::create(LabelTTF::create("Target", "Futura.ttf", 32));
+    targetLabel->setColor(Color3B(0, 0, 0));
+    targetLabel->setAnchorPoint(Point(0.5, 0.5));
+    targetLabel->setPosition(Point(visiableSize.width / 6, visiableSize.height - 100));
+    background->addChild(targetLabel);
     
     targetScoreLabel = Label::create(CCString::createWithFormat("%d",targetScore)->_string, "American Typewriter.ttf", 40);
     targetScoreLabel->setTextColor(Color4B(0, 0, 0, 0));
-    targetScoreLabel->setAnchorPoint(Point(Point::ZERO));
-    targetScoreLabel->setPosition((Point(visiableSize.width / 2 + 120, visiableSize.height - 150)));
+    targetScoreLabel->setAnchorPoint(Point(0.5, 0.5));
+    targetScoreLabel->setPosition((Point(visiableSize.width / 6, visiableSize.height - 150)));
     background->addChild(targetScoreLabel);
+    
+    /* 设定步数显示 */
+    auto moveLabel = MenuItemLabel::create(LabelTTF::create("Move", "Futura.ttf", 32));
+    moveLabel->setColor(Color3B(0, 0, 0));
+    moveLabel->setAnchorPoint(Point(0.5, 0.5));
+    moveLabel->setPosition(Point(visiableSize.width / 2, visiableSize.height - 100));
+    background->addChild(moveLabel);
+    
+    remainMovesLabel = Label::create(CCString::createWithFormat("%d",remainMoves)->_string, "American Typewriter.ttf", 40);
+    remainMovesLabel->setTextColor(Color4B(0, 0, 0, 0));
+    remainMovesLabel->setAnchorPoint(Point(0.5, 0.5));
+    remainMovesLabel->setPosition((Point(visiableSize.width / 2, visiableSize.height - 150)));
+    background->addChild(remainMovesLabel);
+    
+    /* 设定当前分数显示 */
+    auto scoreLabel = MenuItemLabel::create(LabelTTF::create("Score", "Futura.ttf", 32));
+    scoreLabel->setColor(Color3B(0, 0, 0));
+    scoreLabel->setAnchorPoint(Point(0.5, 0.5));
+    scoreLabel->setPosition(Point(visiableSize.width / 6 * 5, visiableSize.height - 100));
+    background->addChild(scoreLabel);
+    
+    currentScoreLabel = Label::create(CCString::createWithFormat("%d",currentScore)->_string, "American Typewriter.ttf", 40);
+    currentScoreLabel->setTextColor(Color4B(0, 0, 0, 0));
+    currentScoreLabel->setAnchorPoint(Point(0.5, 0.5));
+    currentScoreLabel->setPosition((Point(visiableSize.width / 6 * 5, visiableSize.height - 150)));
+    background->addChild(currentScoreLabel);
 }
 
 
@@ -324,14 +327,19 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
             tile->setItem(NULL);
         }
         
+        /* 记录分数 */
+        long scoreNow = linePassedTiles.size() * 20;
+        currentScore += scoreNow;
+        currentScoreLabel->setString(CCString::createWithFormat("%d",currentScore)->_string);
+        if (remainMoves > 0 && currentScore > targetScore) {// game over
+            back2StageSelectScene();
+        }
+        
         /* 记录步数 */
-        currentMoves++;
-        currentMoveLabel->setString(CCString::createWithFormat("%d",currentMoves)->_string);
-        if (currentMoves >= targetMoves && currentScore < targetScore) {
-            auto scene = MainMenuScene::createScene();
-            TransitionScene *transition = TransitionFade::create(1, scene);
-            Director::getInstance()->replaceScene(transition);
-            CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        remainMoves--;
+        remainMovesLabel->setString(CCString::createWithFormat("%d",remainMoves)->_string);
+        if (remainMoves <= 0 && currentScore < targetScore) {// game over
+            back2StageSelectScene();
         }
         
         /* 播放音效*/
@@ -472,10 +480,15 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
  *  @param sender <#sender description#>
  */
 void NormalModeScene::mainMenuCallback(Ref *sender) {
+    back2StageSelectScene();
+}
+
+void NormalModeScene::back2StageSelectScene() {
     auto scene = MainMenuScene::createScene();
     TransitionFlipX *transition = TransitionFlipX::create(1.2, scene);
     CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     Director::getInstance()->replaceScene(transition);
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 }
 
 int NormalModeScene::getStage() {

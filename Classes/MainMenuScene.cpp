@@ -68,8 +68,8 @@ void MainMenuScene::menuNormalModeCallback(Ref *sender) {
     MenuItem* selectedMenu = (MenuItem*) sender;
     int tag = selectedMenu->getTag();// 使用tag记录关卡
     Scene* normalModeScene = NormalModeScene::createScene(tag);
-    TransitionFlipX *transition = TransitionFlipX::create(1.2, normalModeScene);
-    Director::getInstance()->replaceScene(transition);
+//    TransitionFlipX *transition = TransitionFlipX::create(1.2, normalModeScene);
+    Director::getInstance()->replaceScene(normalModeScene);
 }
 
 
