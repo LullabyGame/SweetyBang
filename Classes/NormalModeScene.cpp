@@ -20,7 +20,7 @@ Scene* NormalModeScene::createScene(int level) {
     auto *scene = Scene::create();
     auto *layer = NormalModeScene::createLayer(level);
     scene->addChild(layer);
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/yang.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/moonlight.mp3");
     
     return scene;
 }
