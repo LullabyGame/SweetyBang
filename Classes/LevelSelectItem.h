@@ -1,10 +1,3 @@
-//
-//  LevelSelectItem.h
-//  PageTest
-//
-//  Created by wx5 on 12/31/14.
-//
-//
 
 #ifndef __PageTest__LevelSelectItem__
 #define __PageTest__LevelSelectItem__
@@ -16,7 +9,7 @@ USING_NS_CC;
 
 
 
-class LevelSelectItem : public MenuItemSprite{
+class LevelSelectItem : public MenuItemSprite {
     CC_SYNTHESIZE(int, _level, Level);
     CC_SYNTHESIZE(LevelItemType, _type, Type);
 public:

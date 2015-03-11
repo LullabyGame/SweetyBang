@@ -1,34 +1,28 @@
 //
-//  LevelSelectContent.cpp
-//  PageTest
-//
-//  Created by wx5 on 12/31/14.
+// 控制关卡图片显示位置
 //
 //
 
 #include "LevelSelectContent.h"
 
-LevelSelectContent::LevelSelectContent(){
+LevelSelectContent::LevelSelectContent() {
     
 }
-LevelSelectContent::~LevelSelectContent(){
+LevelSelectContent::~LevelSelectContent() {
     
 }
 
-
-bool LevelSelectContent::init(){
+bool LevelSelectContent::init() {
     if ( !Layer::init() ){
         return false;
     }
-    
-    //initAllLevels();
     return true;
 }
 
 /**
  绘制关卡节点，目前只画了两个，可以放到配置文件中
  */
-void LevelSelectContent::initAllLevels(){
+void LevelSelectContent::initAllLevels() {
     this->removeAllChildren();
     
     levelMenu = Menu::create();

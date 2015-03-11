@@ -1,10 +1,3 @@
-//
-//  LevelSelectContent.h
-//  PageTest
-//
-//  Created by wx5 on 12/31/14.
-//
-//
 
 #ifndef __PageTest__LevelSelectContent__
 #define __PageTest__LevelSelectContent__
@@ -14,7 +7,7 @@
 USING_NS_CC;
 
 
-class LevelSelectContent :public Layer{
+class LevelSelectContent :public Layer {
 public:
     LevelSelectContent();
     ~LevelSelectContent();

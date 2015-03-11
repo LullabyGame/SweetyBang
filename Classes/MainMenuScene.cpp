@@ -74,9 +74,9 @@ void MainMenuScene::menuNormalModeCallback(Ref *sender) {
 
 
 /**
- <#Description#>
+ * 展示所有关卡
  */
-void MainMenuScene::initAllLevels(){
+void MainMenuScene::initAllLevels() {
     UserDefault *save = UserDefault::getInstance();
     g_passLevelCount = save->getIntegerForKey(PlayerPassLevelCountKey, 0);
     log("g_passLevelCount:%d", g_passLevelCount);

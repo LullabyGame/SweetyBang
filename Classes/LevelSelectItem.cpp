@@ -1,9 +1,5 @@
 //
-//  LevelSelectItem.cpp
-//  PageTest
-//
-//  Created by wx5 on 12/31/14.
-//
+// 控制关卡状态显示
 //
 
 #include "LevelSelectItem.h"
@@ -48,6 +44,10 @@ void LevelSelectItem::selectCallBack(Ref* sender) {
     }
 }
 
+/**
+ * 根据关卡的状态添加数字图片
+ *
+ */
 void LevelSelectItem::extraInit() {
     if(_type != kLockLevel){
         char levelBuffer[20] = {0};
@@ -65,6 +65,10 @@ void LevelSelectItem::extraInit() {
     }
 }
 
+/**
+ * 获取关卡图片
+ *
+ */
 std::string LevelSelectItem::getFrameNameByType(const LevelItemType& type) {
     switch (type) {
         case kLockLevel:
