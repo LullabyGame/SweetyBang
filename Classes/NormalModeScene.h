@@ -50,6 +50,7 @@ private:
     int targetScore;
     int currentMoves = 1;
     int currentScore = 0;
+    long scoreNow = 0;
     
     TileSprite* tileMatrix[MATRIX_WIDTH][MATRIX_HEIGHT] = {0};
     TileSprite* lastPaintedTile;
@@ -61,6 +62,7 @@ private:
     Label* currentScoreLabel;
     Label* targetMoveLabel;
     Label* remainMovesLabel;
+    Label* scoreNowLabel;
     
     /* FUNCTIONS */
     void loadStageInfo();

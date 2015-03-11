@@ -207,6 +207,15 @@ void NormalModeScene::initMenuBar() {
     currentScoreLabel->setAnchorPoint(Point(0.5, 0.5));
     currentScoreLabel->setPosition((Point(visiableSize.width / 6 * 5, visiableSize.height - 150)));
     background->addChild(currentScoreLabel);
+    
+    /* 初始化当前分数显示(默认隐藏) */
+    scoreNowLabel = Label::createWithSystemFont(CCString::createWithFormat("%ld", scoreNow)->_string, "Consolas", 80);
+    scoreNowLabel->setTextColor(Color4B(255, 0, 0, 0));
+    scoreNowLabel->setAnchorPoint(Point(0.5, 0.5));
+    scoreNowLabel->setPosition(Point(visiableSize.width / 2, visiableSize.height - 210));
+    scoreNowLabel->setVisible(false);
+    background->addChild(scoreNowLabel);
+
 }
 
 
@@ -304,6 +313,7 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
  *  @param event
  */
 void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
+    Size visiableSize = Director::getInstance()->getVisibleSize();
     // remove lines
     for(auto line : lines) {
         removeChild(line);
@@ -328,12 +338,21 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
         }
         
         /* 记录分数 */
-        long scoreNow = linePassedTiles.size() * 20;
+        scoreNow = linePassedTiles.size() * 20;
         currentScore += scoreNow;
         currentScoreLabel->setString(CCString::createWithFormat("%d",currentScore)->_string);
         if (remainMoves > 0 && currentScore > targetScore) {// game over
             back2StageSelectScene();
         }
+        
+        /* 显示本次分数 */
+        scoreNowLabel->setString("+" + CCString::createWithFormat("%ld",scoreNow)->_string);
+        auto showAction = Show::create();
+        auto moveUp = MoveBy::create(0.4f, Vec2(0, 30));
+        auto hideAction = Hide::create();
+        auto moveDown = MoveBy::create(0.4f, Vec2(0, -30));
+        auto action = Sequence::create(showAction, moveUp, hideAction, moveDown, NULL);
+        scoreNowLabel->runAction(action);
         
         /* 记录步数 */
         remainMoves--;
