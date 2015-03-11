@@ -7,6 +7,7 @@
 //
 
 #include "MainMenuScene.h"
+#include "GameConstants.h"
 
 /**
  *  创建Scene
@@ -48,6 +49,13 @@ bool MainMenuScene::init() {
     normalModeMenu->setPosition(0, 0);
     this->addChild(normalModeMenu);
     
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("res/res/startUI.plist", "res/res/startUI.png");
+    
+//    auto colorLayer = LayerColor::create(Color4B(0x24, 0x2c, 0x3c, 255));
+//    this->addChild(colorLayer, 0);
+    
+    initAllLevels();
+    
     return true;
 }
 
@@ -63,4 +71,21 @@ void MainMenuScene::menuNormalModeCallback(Ref *sender) {
     Scene* normalModeScene = NormalModeScene::createScene(tag);
     TransitionFlipX *transition = TransitionFlipX::create(1.2, normalModeScene);
     Director::getInstance()->replaceScene(transition);
+}
+
+
+/**
+ <#Description#>
+ */
+void MainMenuScene::initAllLevels(){
+    UserDefault *save = UserDefault::getInstance();
+    g_passLevelCount = save->getIntegerForKey(PlayerPassLevelCountKey, 0);
+    log("g_passLevelCount:%d", g_passLevelCount);
+    
+    //just for test, in real game, comment the below code
+    g_passLevelCount = 1;
+    
+    levelSelectContent = LevelSelectContent::create();
+    this->addChild(levelSelectContent);
+    levelSelectContent->initAllLevels(_currentPage);
 }

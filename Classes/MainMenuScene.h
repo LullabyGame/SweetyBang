@@ -12,6 +12,7 @@
 #include "cocos2d.h"
 #include "Settings.h"
 #include "NormalModeScene.h"
+#include "LevelSelectContent.h"
 
 USING_NS_CC;
 
@@ -24,6 +25,17 @@ public:
     
 private:
     void menuNormalModeCallback(Ref *sender);
+    
+    LevelSelectContent* levelSelectContent;
+    int _currentPage;
+    int _maxPage;
+    Menu* _leftMenu;
+    Menu* _rightMenu;
+    
+    void initNavigation();
+    void initAllLevels();
+    void nextPageBack(Ref* sender);
+    void prePageBack(Ref* sender);
     
 };
 
