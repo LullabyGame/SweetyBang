@@ -10,7 +10,7 @@
 #define __PageTest__LevelSelectItem__
 
 #include "cocos2d.h"
-#include "GameConstants.h"
+#include "Settings.h"
 #include <string>
 USING_NS_CC;
 

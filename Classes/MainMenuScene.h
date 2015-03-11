@@ -25,17 +25,8 @@ public:
     
 private:
     void menuNormalModeCallback(Ref *sender);
-    
     LevelSelectContent* levelSelectContent;
-    int _currentPage;
-    int _maxPage;
-    Menu* _leftMenu;
-    Menu* _rightMenu;
-    
-    void initNavigation();
     void initAllLevels();
-    void nextPageBack(Ref* sender);
-    void prePageBack(Ref* sender);
     
 };
 

@@ -10,7 +10,7 @@
 
 //#include "GameSound.h"
 
-LevelSelectItem::LevelSelectItem(int level):_level(level),_type(kLockLevel){
+LevelSelectItem::LevelSelectItem(int level):_level(level),_type(kLockLevel) {
     if(level > (g_passLevelCount + 1)){
         this->setEnabled(false);
         _type = kLockLevel;
@@ -24,10 +24,9 @@ LevelSelectItem::LevelSelectItem(int level):_level(level),_type(kLockLevel){
 }
 
 
-LevelSelectItem* LevelSelectItem::create(int level){
+LevelSelectItem* LevelSelectItem::create(int level) {
     LevelSelectItem *ret = new LevelSelectItem(level);
     auto callback = CC_CALLBACK_1(LevelSelectItem::selectCallBack, ret);
-    
     
     auto normalSprite = Sprite::createWithSpriteFrameName(ret->getFrameNameByType(ret->_type));
     auto selectedSprite = Sprite::createWithSpriteFrameName(ret->getFrameNameByType(ret->_type));
@@ -38,21 +37,18 @@ LevelSelectItem* LevelSelectItem::create(int level){
     return ret;
 }
 
-void LevelSelectItem::selectCallBack(Ref* sender){
+/**
+ * 后台显示点击的哪个关卡
+ *
+ */
+void LevelSelectItem::selectCallBack(Ref* sender) {
     if(_type != kLockLevel){
         log("level item");
-        g_currentLevel = _level;
-        char logBuffer[50] = {0};
-        sprintf(logBuffer, "start level:%d",_level);
-        log(logBuffer);
-        //auto scene = HelloWorld::createScene();
-        //Director::getInstance()->replaceScene( TransitionFade::create(0.5, scene));
+        log("start level:%d",_level);
     }
 }
 
-void LevelSelectItem::extraInit(){
-    
-    
+void LevelSelectItem::extraInit() {
     if(_type != kLockLevel){
         char levelBuffer[20] = {0};
         sprintf(levelBuffer, "%d", _level);
@@ -66,13 +62,10 @@ void LevelSelectItem::extraInit(){
         this->addChild(valueLabel);
         auto size = this->getContentSize();
         valueLabel->setPosition(size.width * 0.5, size.height * 0.5);
-        
     }
-    
-    
 }
 
-std::string LevelSelectItem::getFrameNameByType(const LevelItemType& type){
+std::string LevelSelectItem::getFrameNameByType(const LevelItemType& type) {
     switch (type) {
         case kLockLevel:
         {

@@ -7,7 +7,6 @@
 //
 
 #include "MainMenuScene.h"
-#include "GameConstants.h"
 
 /**
  *  创建Scene
@@ -87,5 +86,5 @@ void MainMenuScene::initAllLevels(){
     
     levelSelectContent = LevelSelectContent::create();
     this->addChild(levelSelectContent);
-    levelSelectContent->initAllLevels(_currentPage);
+    levelSelectContent->initAllLevels();
 }

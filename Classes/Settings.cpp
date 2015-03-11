@@ -13,3 +13,4 @@ float leftPadding = 0;
 float bottomPadding = 0;
 int tileSideLength = 0;
 float itemScale = 0;
+int g_passLevelCount = 0;

@@ -20,10 +20,10 @@ public:
     ~LevelSelectContent();
     virtual bool init();
     CREATE_FUNC(LevelSelectContent);
-    void initAllLevels(int page);
+    void initAllLevels();
 private:
-    Menu* _levelMenu;
-    Menu* _levelMenu2;
+    Menu* levelMenu;
+    Menu* levelMenu2;
     
 };
 

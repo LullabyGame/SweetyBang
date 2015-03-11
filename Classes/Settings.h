@@ -29,6 +29,8 @@ const std::string MAIN_TEXTURE_CONFIG = "img/sweety.plist";
 const std::string STAGE_FILE_PATH = "stage/";
 const std::string STAGE_FILE_PREFIX = "Stage_";
 
+const char PlayerPassLevelCountKey[] = "PlayerPassLevelCountKey";
+
 
 /* 全局变量声明 */
 extern int levelProgress;// 当前用户的关卡进度
@@ -36,5 +38,14 @@ extern float leftPadding;// 左边距
 extern float bottomPadding;// 底边距
 extern int tileSideLength;// tile边长
 extern float itemScale;// item与tile的转换率
+extern int g_passLevelCount;//已通过的关卡
+
+//初始化三种关卡的状态
+typedef enum{
+    kAlreadyPass,
+    kNotPassYet,
+    kLockLevel
+}LevelItemType;
+
 
 #endif
