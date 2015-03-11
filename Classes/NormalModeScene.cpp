@@ -20,7 +20,7 @@ Scene* NormalModeScene::createScene(int level) {
     auto *scene = Scene::create();
     auto *layer = NormalModeScene::createLayer(level);
     scene->addChild(layer);
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/moonlight.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("sound/moonlight.mp3");
     
     return scene;
 }
@@ -181,13 +181,13 @@ void NormalModeScene::initToolBar() {
     auto moveSplitLabel = MenuItemLabel::create(LabelTTF::create("/", "Futura.ttf", 32));
     moveSplitLabel->setColor(Color3B(0, 0, 0));
     moveSplitLabel->setAnchorPoint(Point::ZERO);
-    moveSplitLabel->setPosition(Point(visiableSize.width / 8 + 130, visiableSize.height - 150));
+    moveSplitLabel->setPosition(Point(visiableSize.width / 8 + 150, visiableSize.height - 150));
     background->addChild(moveSplitLabel);
     
     targetMoveLabel = Label::create(CCString::createWithFormat("%d",targetMoves)->_string, "American Typewriter.ttf", 40);
     targetMoveLabel->setTextColor(Color4B(0, 0, 0, 0));
     targetMoveLabel->setAnchorPoint(Point(Point::ZERO));
-    targetMoveLabel->setPosition((Point(visiableSize.width / 8 + 150, visiableSize.height - 150)));
+    targetMoveLabel->setPosition((Point(visiableSize.width / 8 + 170, visiableSize.height - 150)));
     background->addChild(targetMoveLabel);
     
     /* 设定分数显示 */
@@ -293,7 +293,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
     }
     lines.clear();
 
-    // remove tile items
+    // 移除Item
     if (this->linePassedTiles.size() >= 3) {
         for (TileSprite* tile : linePassedTiles) {
             
@@ -308,8 +308,19 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
             /* 移除item */
             tile->removeChild(tile->getItem());
             tile->setItem(NULL);
-            
         }
+        
+        /* 记录步数 */
+        currentMoves++;
+        currentMoveLabel->setString(CCString::createWithFormat("%d",currentMoves)->_string);
+        if (currentMoves >= targetMoves && currentScore < targetScore) {
+            auto scene = MainMenuScene::createScene();
+            TransitionScene *transition = TransitionFade::create(1, scene);
+            Director::getInstance()->replaceScene(transition);
+            CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+        }
+        
+        /* 播放音效*/
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/Ka-Ching.wav");
     }
     
