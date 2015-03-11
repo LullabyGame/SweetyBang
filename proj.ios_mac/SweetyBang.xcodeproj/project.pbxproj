@@ -46,6 +46,12 @@
 		50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 50EF62A117ECD613001EB2F8 /* Icon-50.png */; };
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
+		7A94E7D71AAF314B007DE46C /* GameConstants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A94E7CF1AAF314B007DE46C /* GameConstants.cpp */; };
+		7A94E7D81AAF314B007DE46C /* GameConstants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A94E7CF1AAF314B007DE46C /* GameConstants.cpp */; };
+		7A94E7DB1AAF314B007DE46C /* LevelSelectContent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A94E7D31AAF314B007DE46C /* LevelSelectContent.cpp */; };
+		7A94E7DC1AAF314B007DE46C /* LevelSelectContent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A94E7D31AAF314B007DE46C /* LevelSelectContent.cpp */; };
+		7A94E7DD1AAF314B007DE46C /* LevelSelectItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A94E7D51AAF314B007DE46C /* LevelSelectItem.cpp */; };
+		7A94E7DE1AAF314B007DE46C /* LevelSelectItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A94E7D51AAF314B007DE46C /* LevelSelectItem.cpp */; };
 		A26E47D3A498AB0ADAC85CF9 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 435C40AC8DC8098A3DFD0FE0 /* res */; };
 		AD9F4042A3BB98273BCD18C0 /* res in Resources */ = {isa = PBXBuildFile; fileRef = 435C40AC8DC8098A3DFD0FE0 /* res */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -116,6 +122,12 @@
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		606A4975BBA2A15E7A8EC014 /* libcocos2d iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcocos2d iOS.a"; path = "/Applications/Cocos/frameworks/cocos2d-x/prebuilt/ios/libcocos2d iOS.a"; sourceTree = "<absolute>"; };
+		7A94E7CF1AAF314B007DE46C /* GameConstants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameConstants.cpp; sourceTree = "<group>"; };
+		7A94E7D01AAF314B007DE46C /* GameConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameConstants.h; sourceTree = "<group>"; };
+		7A94E7D31AAF314B007DE46C /* LevelSelectContent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelSelectContent.cpp; sourceTree = "<group>"; };
+		7A94E7D41AAF314B007DE46C /* LevelSelectContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSelectContent.h; sourceTree = "<group>"; };
+		7A94E7D51AAF314B007DE46C /* LevelSelectItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelSelectItem.cpp; sourceTree = "<group>"; };
+		7A94E7D61AAF314B007DE46C /* LevelSelectItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelSelectItem.h; sourceTree = "<group>"; };
 		7C6F44AB94788DFDFB07133F /* libcocos2d Mac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcocos2d Mac.a"; path = "/Applications/Cocos/frameworks/cocos2d-x/prebuilt/mac/libcocos2d Mac.a"; sourceTree = "<absolute>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -245,6 +257,12 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7A94E7CF1AAF314B007DE46C /* GameConstants.cpp */,
+				7A94E7D01AAF314B007DE46C /* GameConstants.h */,
+				7A94E7D31AAF314B007DE46C /* LevelSelectContent.cpp */,
+				7A94E7D41AAF314B007DE46C /* LevelSelectContent.h */,
+				7A94E7D51AAF314B007DE46C /* LevelSelectItem.cpp */,
+				7A94E7D61AAF314B007DE46C /* LevelSelectItem.h */,
 				CFBDCE441AA84C8300650DE5 /* AppMacros.h */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
@@ -445,14 +463,17 @@
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				7A94E7DB1AAF314B007DE46C /* LevelSelectContent.cpp in Sources */,
 				CFBDCE561AA84C8300650DE5 /* ItemSprite.cpp in Sources */,
 				CFBDCE5E1AA84C8300650DE5 /* NormalModeScene.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				7A94E7D71AAF314B007DE46C /* GameConstants.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				CF7C62F91AAE11A600027AA5 /* Settings.cpp in Sources */,
 				CFBDCE5A1AA84C8300650DE5 /* LoadingScene.cpp in Sources */,
 				CFBDCE601AA84C8300650DE5 /* TileSprite.cpp in Sources */,
 				CFBDCE581AA84C8300650DE5 /* LineSprite.cpp in Sources */,
+				7A94E7DD1AAF314B007DE46C /* LevelSelectItem.cpp in Sources */,
 				CFBDCE5C1AA84C8300650DE5 /* MainMenuScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,11 +485,14 @@
 				CFBDCE591AA84C8300650DE5 /* LineSprite.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				CF7C62FA1AAE11A600027AA5 /* Settings.cpp in Sources */,
+				7A94E7DE1AAF314B007DE46C /* LevelSelectItem.cpp in Sources */,
 				CFBDCE611AA84C8300650DE5 /* TileSprite.cpp in Sources */,
 				CFBDCE5D1AA84C8300650DE5 /* MainMenuScene.cpp in Sources */,
 				CFBDCE571AA84C8300650DE5 /* ItemSprite.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				7A94E7D81AAF314B007DE46C /* GameConstants.cpp in Sources */,
 				CFBDCE5B1AA84C8300650DE5 /* LoadingScene.cpp in Sources */,
+				7A94E7DC1AAF314B007DE46C /* LevelSelectContent.cpp in Sources */,
 				CFBDCE5F1AA84C8300650DE5 /* NormalModeScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
