@@ -40,7 +40,7 @@ bool LoadingScene::init() {
     
     /* 预读取音乐和音效 */
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/Ka-Ching.wav");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/yang.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/moonlight.mp3");
     
     /* 初始化素材图片 */
     Director::getInstance()->getTextureCache()->addImageAsync(MAIN_TEXTURE_IMAGE, CC_CALLBACK_1(LoadingScene::loadingCallBack, this));

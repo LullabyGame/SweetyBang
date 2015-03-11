@@ -20,7 +20,7 @@ Scene* NormalModeScene::createScene(int level) {
     auto *scene = Scene::create();
     auto *layer = NormalModeScene::createLayer(level);
     scene->addChild(layer);
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/yang.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("sound/moonlight.mp3");
     
     return scene;
 }
@@ -62,7 +62,6 @@ NormalModeScene* NormalModeScene::createLayer(int stage) {
 bool NormalModeScene::initLayer() {
     
     /* 设定基础数值 */
-    Size visiableSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
     
     /* 添加背景层 */
@@ -72,22 +71,11 @@ bool NormalModeScene::initLayer() {
     background->setContentSize(Size(designResolutionSize.width, designResolutionSize.height));// 根据设计分辨率设定图片大小
     this->addChild(background);
     
-    /* 添加"back to main menu"按钮 */
-    auto mainMenuLabel = MenuItemLabel::create(LabelTTF::create("Back to Main Menu", "Futura.ttf", 32), CC_CALLBACK_1(NormalModeScene::mainMenuCallback, this));
-    mainMenuLabel->setAnchorPoint(Point(0, 0));
-    mainMenuLabel->setPosition(Point(visiableSize.width / 2 - 150, visiableSize.height - 90));
-    auto mainMenu = Menu::create(mainMenuLabel, NULL);
-    mainMenu->setPosition(0, 0);
-    background->addChild(mainMenu);
+    /* 初始化关卡信息 */
+    loadStageInfo();// 读取关卡信息
     
-    /* 生成目标分数 */
-//    remainsMonsterLabel = Label::create(CCString::createWithFormat("%d",remainsMonster)->_string, "American Typewriter.ttf", 40);
-//    remainsMonsterLabel->setAnchorPoint(Point(0.1, 0.1));
-//    remainsMonsterLabel->setPosition((Point(visiableSize.width / 2, visiableSize.height - 150)));
-//    background->addChild(remainsMonsterLabel);
-    
-    /* 初始化Tile和Item */
-    initTilesAndItems();
+    /* 初始化工具栏 */
+    initToolBar();
     
     /* 添加事件监听 */
     addTouchListeners();
@@ -99,33 +87,11 @@ bool NormalModeScene::initLayer() {
 /**
  * 读取关卡信息
  */
-bool NormalModeScene::initStageInfo() {
+void NormalModeScene::loadStageInfo() {
     std::stringstream stageStream;
     stageStream << this->getStage();
     std::string stageName = STAGE_FILE_PATH + STAGE_FILE_PREFIX + stageStream.str() + ".json";
     
-    if(!FileUtils::getInstance()->isFileExist(stageName)) {
-        CCLOG("json file is not find");
-        return false;
-    }
-    
-    std::string data = FileUtils::getInstance()->getStringFromFile(stageName);
-    rapidjson::Document doc;
-    doc.Parse<rapidjson::kParseDefaultFlags>(data.c_str());
-//    rapidjson::Value& targetMonster = doc["targetMonster"];
-//    remainsMonster = targetMonster.GetInt();
-    
-    return true;
-}
-
-
-/**
- * 初始化Tile和Item
- */
-void NormalModeScene::initTilesAndItems() {
-    std::stringstream stageStream;
-    stageStream << this->getStage();
-    std::string stageName = STAGE_FILE_PATH + STAGE_FILE_PREFIX + stageStream.str() + ".json";
     if(!FileUtils::getInstance()->isFileExist(stageName)) {
         CCLOG("json file is not find");
         return;
@@ -134,10 +100,26 @@ void NormalModeScene::initTilesAndItems() {
     std::string data = FileUtils::getInstance()->getStringFromFile(stageName);
     rapidjson::Document doc;
     doc.Parse<rapidjson::kParseDefaultFlags>(data.c_str());
-    rapidjson::Value& tiles = doc["tiles"];
-    if (tiles.IsArray()) {
-        for (int row = 0; row < tiles.Size(); row++) {
-            rapidjson::Value& cols = tiles[row];
+
+    /* 初始化Tile和Item */
+    rapidjson::Value& tileInfo = doc["tiles"];
+    initTilesAndItems(tileInfo);
+    
+    /* 初始化目标分数与限制步数 */
+    rapidjson::Value& stageScore = doc["score"];
+    rapidjson::Value& stageMove = doc["move"];
+    this->targetScore = stageScore.GetInt();
+    this->targetMoves = stageMove.GetInt();
+}
+
+
+/**
+ * 初始化Tile和Item
+ */
+void NormalModeScene::initTilesAndItems(rapidjson::Value& tileInfo) {
+    if (tileInfo.IsArray()) {
+        for (int row = 0; row < tileInfo.Size(); row++) {
+            rapidjson::Value& cols = tileInfo[row];
             if (cols.IsArray()) {
                 for (int col = 0; col < cols.Size(); col++) {
                     int tileType = cols[col].GetInt();
@@ -145,7 +127,7 @@ void NormalModeScene::initTilesAndItems() {
                         continue;
                     }else {
                         float posX = leftPadding + (tileSideLength + TILE_GAP) * col;
-                        float posY = bottomPadding + (tileSideLength + TILE_GAP) * (tiles.Size() - 1 - row);
+                        float posY = bottomPadding + (tileSideLength + TILE_GAP) * (tileInfo.Size() - 1 - row);
                         
                         // init items
                         BasicItemType randomType = BasicItemType(arc4random() % TOTAL_ITEM_TYPE);
@@ -157,9 +139,9 @@ void NormalModeScene::initTilesAndItems() {
                         tile->addChild(item);
                         
                         // add tile into matrix
-                        tileMatrix[col][tiles.Size() - 1 - row] = tile;
+                        tileMatrix[col][tileInfo.Size() - 1 - row] = tile;
                         tile->setArrayX(col);
-                        tile->setArrayY(tiles.Size() - 1 - row);
+                        tile->setArrayY(tileInfo.Size() - 1 - row);
                         
                         // add tile to background
                         this->background->addChild(tile);
@@ -168,6 +150,58 @@ void NormalModeScene::initTilesAndItems() {
             }
         }
     }
+}
+
+
+void NormalModeScene::initToolBar() {
+    Size visiableSize = Director::getInstance()->getVisibleSize();
+    
+    /* 添加"Main Menu"按钮 */
+    auto mainMenuLabel = MenuItemLabel::create(LabelTTF::create("Main Menu", "Futura.ttf", 32), CC_CALLBACK_1(NormalModeScene::mainMenuCallback, this));
+    mainMenuLabel->setColor(Color3B(0, 0, 0));
+    mainMenuLabel->setAnchorPoint(Point::ZERO);
+    mainMenuLabel->setPosition(Point(visiableSize.width / 2 - 80, visiableSize.height - 90));
+    auto mainMenu = Menu::create(mainMenuLabel, NULL);
+    mainMenu->setPosition(0, 0);
+    background->addChild(mainMenu);
+    
+    /* 设定步数显示 */
+    auto moveLabel = MenuItemLabel::create(LabelTTF::create("Move:", "Futura.ttf", 32));
+    moveLabel->setColor(Color3B(0, 0, 0));
+    moveLabel->setAnchorPoint(Point::ZERO);
+    moveLabel->setPosition(Point(visiableSize.width / 8, visiableSize.height - 150));
+    background->addChild(moveLabel);
+    
+    currentMoveLabel = Label::create(CCString::createWithFormat("%d",currentMoves)->_string, "American Typewriter.ttf", 40);
+    currentMoveLabel->setTextColor(Color4B(0, 0, 0, 0));
+    currentMoveLabel->setAnchorPoint(Point(Point::ZERO));
+    currentMoveLabel->setPosition((Point(visiableSize.width / 8 + 100, visiableSize.height - 150)));
+    background->addChild(currentMoveLabel);
+    
+    auto moveSplitLabel = MenuItemLabel::create(LabelTTF::create("/", "Futura.ttf", 32));
+    moveSplitLabel->setColor(Color3B(0, 0, 0));
+    moveSplitLabel->setAnchorPoint(Point::ZERO);
+    moveSplitLabel->setPosition(Point(visiableSize.width / 8 + 130, visiableSize.height - 150));
+    background->addChild(moveSplitLabel);
+    
+    targetMoveLabel = Label::create(CCString::createWithFormat("%d",targetMoves)->_string, "American Typewriter.ttf", 40);
+    targetMoveLabel->setTextColor(Color4B(0, 0, 0, 0));
+    targetMoveLabel->setAnchorPoint(Point(Point::ZERO));
+    targetMoveLabel->setPosition((Point(visiableSize.width / 8 + 150, visiableSize.height - 150)));
+    background->addChild(targetMoveLabel);
+    
+    /* 设定分数显示 */
+    auto scoreLabel = MenuItemLabel::create(LabelTTF::create("Score:", "Futura.ttf", 32));
+    scoreLabel->setColor(Color3B(0, 0, 0));
+    scoreLabel->setAnchorPoint(Point::ZERO);
+    scoreLabel->setPosition(Point(visiableSize.width / 2 + 20, visiableSize.height - 150));
+    background->addChild(scoreLabel);
+    
+    targetScoreLabel = Label::create(CCString::createWithFormat("%d",targetScore)->_string, "American Typewriter.ttf", 40);
+    targetScoreLabel->setTextColor(Color4B(0, 0, 0, 0));
+    targetScoreLabel->setAnchorPoint(Point(Point::ZERO));
+    targetScoreLabel->setPosition((Point(visiableSize.width / 2 + 120, visiableSize.height - 150)));
+    background->addChild(targetScoreLabel);
 }
 
 

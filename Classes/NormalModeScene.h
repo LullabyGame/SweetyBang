@@ -48,6 +48,8 @@ private:
     int stage = 0;// 关卡号
     int targetMoves;
     int targetScore;
+    int currentMoves = 1;
+    int currentScore = 0;
     
     TileSprite* tileMatrix[MATRIX_WIDTH][MATRIX_HEIGHT] = {0};
     TileSprite* lastPaintedTile;
@@ -55,16 +57,21 @@ private:
     cocos2d::Vector<LineSprite*> lines;
     cocos2d::Vector<LayerColor*> layerColors;
     
-    int remainsMonster;
-    Label* remainsMonsterLabel;
+    Label* targetScoreLabel;
+    Label* currentScoreLabel;
+    Label* targetMoveLabel;
+    Label* currentMoveLabel;
     
     /* FUNCTIONS */
-    bool initStageInfo();
-    void initTilesAndItems();
+    void loadStageInfo();
+    void initTilesAndItems(rapidjson::Value& tileInfo);
+    void initToolBar();
+    
     TileSprite* getOnTouchTile(float onTouchX, float onTouchY);// 查询当前触摸点在Tile矩阵中的位置
     void darwLine(TileSprite* beginTile, TileSprite* endTile);
     bool isSameItemType(TileSprite* lastTile, TileSprite* currentTile);
     void deleteDepetitionLine(TileSprite* onTouchTile);// 当选择到已经经过的格子，删除该格子后的线段
+    
     void fallDownItems();
     void fillTiles();
     
