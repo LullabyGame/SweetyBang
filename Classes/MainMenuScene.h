@@ -11,7 +11,7 @@
 
 #include "cocos2d.h"
 #include "Settings.h"
-#include "NormalModeScene.h"
+//#include "NormalModeScene.h"
 #include "LevelSelectContent.h"
 
 USING_NS_CC;
@@ -24,8 +24,6 @@ public:
     static Scene* createScene();
     
 private:
-    void menuNormalModeCallback(Ref *sender);
-    LevelSelectContent* levelSelectContent;
     void initAllLevels();
     
 };

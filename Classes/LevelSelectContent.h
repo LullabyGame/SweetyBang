@@ -17,7 +17,7 @@ public:
 private:
     Menu* levelMenu;
     Menu* levelMenu2;
-    
+    Menu* levelMenu3;
 };
 
 #endif /* defined(__PageTest__LevelSelectContent__) */

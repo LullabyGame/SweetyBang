@@ -19,7 +19,13 @@ LevelSelectItem::LevelSelectItem(int level):_level(level),_type(kLockLevel) {
     }
 }
 
-
+/**
+ * 创建一个子菜单项
+ *
+ * @param normalSprite 一般情况下的精灵
+ * @param selectedSprite 选中情况下的精灵
+ * @param disabledSprite 不可用情况下的精灵
+ */
 LevelSelectItem* LevelSelectItem::create(int level) {
     LevelSelectItem *ret = new LevelSelectItem(level);
     auto callback = CC_CALLBACK_1(LevelSelectItem::selectCallBack, ret);
@@ -27,6 +33,7 @@ LevelSelectItem* LevelSelectItem::create(int level) {
     auto normalSprite = Sprite::createWithSpriteFrameName(ret->getFrameNameByType(ret->_type));
     auto selectedSprite = Sprite::createWithSpriteFrameName(ret->getFrameNameByType(ret->_type));
     auto disabledSprite = Sprite::createWithSpriteFrameName(ret->getFrameNameByType(ret->_type));
+    // 初始化子菜单项
     ret->initWithNormalSprite(normalSprite, selectedSprite, disabledSprite, callback);
     ret->extraInit();
     ret->autorelease();
@@ -42,6 +49,9 @@ void LevelSelectItem::selectCallBack(Ref* sender) {
         log("level item");
         log("start level:%d",_level);
     }
+    //跳转关卡
+    Scene* normalModeScene = NormalModeScene::createScene(_level);
+    Director::getInstance()->replaceScene(normalModeScene);
 }
 
 /**
