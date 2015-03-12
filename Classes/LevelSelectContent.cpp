@@ -20,48 +20,26 @@ bool LevelSelectContent::init() {
 }
 
 /**
- 绘制关卡节点，目前只画了两个，可以放到配置文件中
+ * 绘制关卡节点,写死每页10关
  */
-void LevelSelectContent::initAllLevels() {
+void LevelSelectContent::initAllLevels(ssize_t idx) {
     this->removeAllChildren();
+    int idxs = (int) idx;
+    //假设每页10关
+    int firstNumber = idxs * 10 + 1;
     
-    levelMenu = Menu::create();
-    this->addChild(levelMenu);
-    
-    auto oneLevelItem = LevelSelectItem::create(1);
-    levelMenu->addChild(oneLevelItem);
-    oneLevelItem->setPosition(350, 150);
-    
-    levelMenu->setPosition(0, 0);
-    levelMenu->setOpacity(0);
-    auto fadeAction = FadeIn::create(0.5);
-    levelMenu->runAction(fadeAction);
-    
-    ///////////////////////////////////////
-    
-    levelMenu2 = Menu::create();
-    this->addChild(levelMenu2);
-    
-    auto oneLevelItem2 = LevelSelectItem::create(2);
-    levelMenu2->addChild(oneLevelItem2);
-    oneLevelItem2->setPosition(450, 250);
-    
-    levelMenu2->setPosition(0, 0);
-    levelMenu2->setOpacity(0);
-    auto fadeAction2 = FadeIn::create(0.5);
-    levelMenu2->runAction(fadeAction2);
-    
-    ///////////////////////////////////////
-    
-    levelMenu3 = Menu::create();
-    this->addChild(levelMenu3);
-    
-    auto oneLevelItem3 = LevelSelectItem::create(3);
-    levelMenu3->addChild(oneLevelItem3);
-    oneLevelItem3->setPosition(450, 400);
-    
-    levelMenu3->setPosition(0, 0);
-    levelMenu3->setOpacity(0);
-    auto fadeAction3 = FadeIn::create(0.5);
-    levelMenu3->runAction(fadeAction3);
+    for (int i = 0; i < 10; i++ ) {
+        levelMenu = Menu::create();
+        this->addChild(levelMenu);
+        
+        auto oneLevelItem = LevelSelectItem::create(firstNumber + i);
+        levelMenu->addChild(oneLevelItem);
+        oneLevelItem->setPosition(350, 150 + i * 100);
+        oneLevelItem->setScale(itemScale, itemScale);
+        
+        levelMenu->setPosition(0, 0);
+        levelMenu->setOpacity(0);
+        auto fadeAction = FadeIn::create(0.5);
+        levelMenu->runAction(fadeAction);
+    }
 }

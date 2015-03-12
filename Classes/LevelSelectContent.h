@@ -13,11 +13,9 @@ public:
     ~LevelSelectContent();
     virtual bool init();
     CREATE_FUNC(LevelSelectContent);
-    void initAllLevels();
+    void initAllLevels(ssize_t idx);
 private:
     Menu* levelMenu;
-    Menu* levelMenu2;
-    Menu* levelMenu3;
 };
 
 #endif /* defined(__PageTest__LevelSelectContent__) */

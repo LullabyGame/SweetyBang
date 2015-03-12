@@ -48,10 +48,10 @@ void LevelSelectItem::selectCallBack(Ref* sender) {
     if(_type != kLockLevel){
         log("level item");
         log("start level:%d",_level);
+        //跳转关卡
+        Scene* normalModeScene = NormalModeScene::createScene(_level);
+        Director::getInstance()->replaceScene(normalModeScene);
     }
-    //跳转关卡
-    Scene* normalModeScene = NormalModeScene::createScene(_level);
-    Director::getInstance()->replaceScene(normalModeScene);
 }
 
 /**
