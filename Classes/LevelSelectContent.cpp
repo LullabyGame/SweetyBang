@@ -24,7 +24,7 @@ bool LevelSelectContent::init() {
  */
 void LevelSelectContent::initAllLevels(ssize_t idx) {
 //    this->removeAllChildren();
-    int idxs = (int) idx;
+    int idxs = (int) idx; 
     //假设每页10关
     int firstNumber = idxs * 10 + 1;
     
