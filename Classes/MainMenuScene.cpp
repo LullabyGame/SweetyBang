@@ -42,12 +42,10 @@ bool MainMenuScene::init() {
  * 展示所有关卡
  */
 void MainMenuScene::initAllLevels(Sprite * background, ssize_t idx) {
+    //下面代码需要更改，内存库存储
     UserDefault *save = UserDefault::getInstance();
-    g_passLevelCount = save->getIntegerForKey(PlayerPassLevelCountKey, 0);
+    g_passLevelCount = save->getIntegerForKey(PlayerPassLevelCountKey, 15);
     log("g_passLevelCount:%d", g_passLevelCount);
-    
-    //下面代码需要更改
-    g_passLevelCount = 5;
     
     LevelSelectContent* levelSelectContent = LevelSelectContent::create();
     background->addChild(levelSelectContent);
