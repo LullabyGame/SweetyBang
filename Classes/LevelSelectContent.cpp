@@ -23,7 +23,7 @@ bool LevelSelectContent::init() {
  * 绘制关卡节点,写死每页10关
  */
 void LevelSelectContent::initAllLevels(ssize_t idx) {
-    this->removeAllChildren();
+//    this->removeAllChildren();
     int idxs = (int) idx;
     //假设每页10关
     int firstNumber = idxs * 10 + 1;

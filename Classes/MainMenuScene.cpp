@@ -41,16 +41,16 @@ bool MainMenuScene::init() {
 /**
  * 展示所有关卡
  */
-void MainMenuScene::initAllLevels(TableViewCell * cell, ssize_t idx) {
+void MainMenuScene::initAllLevels(Sprite * background, ssize_t idx) {
     UserDefault *save = UserDefault::getInstance();
     g_passLevelCount = save->getIntegerForKey(PlayerPassLevelCountKey, 0);
     log("g_passLevelCount:%d", g_passLevelCount);
     
     //下面代码需要更改
-    g_passLevelCount = 24;
+    g_passLevelCount = 5;
     
     LevelSelectContent* levelSelectContent = LevelSelectContent::create();
-    cell->addChild(levelSelectContent);
+    background->addChild(levelSelectContent);
     levelSelectContent->initAllLevels(idx);
 }
 
@@ -60,7 +60,7 @@ void MainMenuScene::initAllLevels(TableViewCell * cell, ssize_t idx) {
  *
  */
 Size MainMenuScene::cellSizeForTable(TableView *table) {
-    return Size(640,1136+200);
+    return Size(0,1136);
 }
 /**
  * 根据索引idx创建菜单
@@ -69,21 +69,30 @@ Size MainMenuScene::cellSizeForTable(TableView *table) {
  */
 TableViewCell* MainMenuScene::tableCellAtIndex(TableView *table, ssize_t idx) {
     char Icon[20];   //根据idx选中显示的图片
-    sprintf(Icon, "img/background%zd.png", idx);
+    sprintf(Icon, "res/img/background%zd.png", idx);
     TableViewCell * cell = table->dequeueCell();
-    log("%zd",idx);
+    log("page: %zd",idx);
+    log("img: %s",Icon);
     Size visiableSize = Director::getInstance()->getVisibleSize();
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("res/res/startUI.plist", "res/res/startUI.png");
+    Sprite * background;
     if (!cell){
         cell = TableViewCell::create();
         /* 添加背景 */
-        auto background = Sprite::create(Icon);
+        background = Sprite::create(Icon);
         background->setAnchorPoint(Point::ZERO);
         background->setPosition(Vec2(0,0));
+        background->setScale(0.85, 0.85);
+        background->setTag(2);
         cell->addChild(background);
+        initAllLevels(background,idx);
+    }else{
+        /* 取出消失的cell修改内容 */
+        background = (Sprite*)cell->getChildByTag(2);
+        background->setTexture(Icon);
+        background->removeAllChildren();
+        initAllLevels(background,idx);
     }
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("res/res/startUI.plist", "res/res/startUI.png");
-    initAllLevels(cell,idx);
-    
     return cell;
 }
 
@@ -92,5 +101,5 @@ TableViewCell* MainMenuScene::tableCellAtIndex(TableView *table, ssize_t idx) {
  *
  */
 ssize_t MainMenuScene::numberOfCellsInTableView(TableView *table) {
-    return 3;
+    return 5;
 }

@@ -62,16 +62,19 @@ void LevelSelectItem::extraInit() {
     if(_type != kLockLevel){
         char levelBuffer[20] = {0};
         sprintf(levelBuffer, "%d", _level);
+        log("levelBuffer: %zd",_level);
         Label* valueLabel = nullptr;
         if(_type == kAlreadyPass){
             valueLabel = Label::createWithBMFont("res/fonts/blueLevel.fnt", levelBuffer);
-            
+            this->addChild(valueLabel);
+            auto size = this->getContentSize();
+            valueLabel->setPosition(size.width * 0.5, size.height * 0.5);
         }else if(_type == kNotPassYet){
             valueLabel = Label::createWithBMFont("res/fonts/whiteLevel.fnt", levelBuffer);
+            this->addChild(valueLabel);
+            auto size = this->getContentSize();
+            valueLabel->setPosition(size.width * 0.5, size.height * 0.5);
         }
-        this->addChild(valueLabel);
-        auto size = this->getContentSize();
-        valueLabel->setPosition(size.width * 0.5, size.height * 0.5);
     }
 }
 

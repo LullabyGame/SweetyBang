@@ -29,7 +29,7 @@ public:
     virtual TableViewCell* tableCellAtIndex(TableView *table, ssize_t idx);
     virtual ssize_t numberOfCellsInTableView(TableView *table);
 private:
-    void initAllLevels(TableViewCell * cell, ssize_t idx);
+    void initAllLevels(Sprite * background, ssize_t idx);
     
 };
 
