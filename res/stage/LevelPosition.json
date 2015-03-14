@@ -1,0 +1,26 @@
+{
+    "levels1" : [ 
+        { "LevelNo": 1, "PositionX": 350, "PositionY": 150 },
+        { "LevelNo": 2, "PositionX": 400, "PositionY": 250 },
+        { "LevelNo": 3, "PositionX": 450, "PositionY": 350 },
+        { "LevelNo": 4, "PositionX": 500, "PositionY": 450 },
+        { "LevelNo": 5, "PositionX": 500, "PositionY": 550 },
+        { "LevelNo": 6, "PositionX": 480, "PositionY": 650 },
+        { "LevelNo": 7, "PositionX": 440, "PositionY": 750 },
+        { "LevelNo": 8, "PositionX": 400, "PositionY": 850 },
+        { "LevelNo": 9, "PositionX": 380, "PositionY": 950 },
+        { "LevelNo": 10, "PositionX": 350, "PositionY": 1050 }
+    ],
+    "levels2" : [ 
+        { "LevelNo": 11, "PositionX": 350, "PositionY": 150 },
+        { "LevelNo": 12, "PositionX": 350, "PositionY": 250 },
+        { "LevelNo": 13, "PositionX": 350, "PositionY": 350 },
+        { "LevelNo": 14, "PositionX": 350, "PositionY": 450 },
+        { "LevelNo": 15, "PositionX": 350, "PositionY": 550 },
+        { "LevelNo": 16, "PositionX": 350, "PositionY": 650 },
+        { "LevelNo": 17, "PositionX": 350, "PositionY": 750 },
+        { "LevelNo": 18, "PositionX": 350, "PositionY": 850 },
+        { "LevelNo": 19, "PositionX": 350, "PositionY": 950 },
+        { "LevelNo": 20, "PositionX": 350, "PositionY": 1050 }
+    ]
+}
