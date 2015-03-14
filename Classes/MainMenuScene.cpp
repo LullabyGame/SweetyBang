@@ -58,7 +58,8 @@ void MainMenuScene::initAllLevels(Sprite * background, ssize_t idx) {
  *
  */
 Size MainMenuScene::cellSizeForTable(TableView *table) {
-    return Size(0,1136);
+    Size visiableSize = Director::getInstance()->getVisibleSize();
+    return Size(visiableSize.width,visiableSize.height);
 }
 /**
  * 根据索引idx创建菜单
@@ -66,7 +67,7 @@ Size MainMenuScene::cellSizeForTable(TableView *table) {
  * @return 返回当前菜单
  */
 TableViewCell* MainMenuScene::tableCellAtIndex(TableView *table, ssize_t idx) {
-    char Icon[20];   //根据idx选中显示的图片
+    char Icon[26];   //根据idx选中显示的图片
     sprintf(Icon, "res/img/background%zd.png", idx);
     TableViewCell * cell = table->dequeueCell();
     log("page: %zd",idx);
