@@ -80,11 +80,10 @@ TableViewCell* MainMenuScene::tableCellAtIndex(TableView *table, ssize_t idx) {
         /* 添加背景 */
         background = Sprite::create(Icon);
         background->setAnchorPoint(Point::ZERO);
-        background->setPosition(Vec2(0,0));
-        background->setScale(0.85, 0.85);
-        background->setTag(2);
+        background->setPosition(Point::ZERO);
+        background->setTag(2);// TODO
         cell->addChild(background);
-        initAllLevels(background,idx);
+        initAllLevels(background, idx);
     }else{
         /* 取出消失的cell修改内容 */
         background = (Sprite*)cell->getChildByTag(2);
