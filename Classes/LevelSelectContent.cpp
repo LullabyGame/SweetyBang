@@ -47,9 +47,6 @@ void LevelSelectContent::initAllLevels(ssize_t idx) {
             rapidjson::Value &positionY = cols["PositionY"];
             int posX = positionX.GetInt();
             int posY = positionY.GetInt();
-            log("PositionX: %i",posX);
-            log("PositionY: %i",posY);
-            log("row: %i",row);
             
             levelMenu = Menu::create();
             this->addChild(levelMenu);
@@ -65,20 +62,4 @@ void LevelSelectContent::initAllLevels(ssize_t idx) {
             levelMenu->runAction(fadeAction);
         }
     }
-
-    
-//    for (int i = 0; i < 10; i++ ) {
-//        levelMenu = Menu::create();
-//        this->addChild(levelMenu);
-//        
-//        auto oneLevelItem = LevelSelectItem::create(firstNumber + i);
-//        levelMenu->addChild(oneLevelItem);
-//        oneLevelItem->setPosition(350, 150 + i * 100);
-//        oneLevelItem->setScale(itemScale, itemScale);
-//        
-//        levelMenu->setPosition(0, 0);
-//        levelMenu->setOpacity(0);
-//        auto fadeAction = FadeIn::create(0.5);
-//        levelMenu->runAction(fadeAction);
-//    }
 }

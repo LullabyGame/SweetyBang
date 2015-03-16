@@ -46,8 +46,6 @@ LevelSelectItem* LevelSelectItem::create(int level) {
  */
 void LevelSelectItem::selectCallBack(Ref* sender) {
     if(_type != kLockLevel){
-        log("level item");
-        log("start level:%d",_level);
         //跳转关卡
         Scene* normalModeScene = NormalModeScene::createScene(_level);
         Director::getInstance()->replaceScene(normalModeScene);
@@ -62,7 +60,6 @@ void LevelSelectItem::extraInit() {
     if(_type != kLockLevel){
         char levelBuffer[20] = {0};
         sprintf(levelBuffer, "%d", _level);
-        log("levelBuffer: %zd",_level);
         Label* valueLabel = nullptr;
         if(_type == kAlreadyPass){
             valueLabel = Label::createWithBMFont("res/fonts/blueLevel.fnt", levelBuffer);
