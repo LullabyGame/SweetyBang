@@ -32,8 +32,14 @@ bool MainMenuScene::init() {
     }
     
     Size visiableSize = Director::getInstance()->getVisibleSize();
+    //下面代码需要更改，内存库存储
+    UserDefault *save = UserDefault::getInstance();
+    g_passLevelCount = save->getIntegerForKey(PlayerPassLevelCountKey, 8);
+    log("g_passLevelCount:%d", g_passLevelCount);
     
     TableView * tv = TableView::create(this,Size(visiableSize.width,visiableSize.height));
+    /* 控制列表只显示到用户完成的关卡位置 */
+    tv->setContentOffset(Vec2(0, -(visiableSize.height * (g_passLevelCount/10))));
     this->addChild(tv);
     return true;
 }
@@ -42,11 +48,6 @@ bool MainMenuScene::init() {
  * 展示所有关卡
  */
 void MainMenuScene::initAllLevels(Sprite * background, ssize_t idx) {
-    //下面代码需要更改，内存库存储
-    UserDefault *save = UserDefault::getInstance();
-    g_passLevelCount = save->getIntegerForKey(PlayerPassLevelCountKey, 15);
-    log("g_passLevelCount:%d", g_passLevelCount);
-    
     LevelSelectContent* levelSelectContent = LevelSelectContent::create();
     background->addChild(levelSelectContent);
     levelSelectContent->initAllLevels(idx);
@@ -59,6 +60,8 @@ void MainMenuScene::initAllLevels(Sprite * background, ssize_t idx) {
  */
 Size MainMenuScene::cellSizeForTable(TableView *table) {
     Size visiableSize = Director::getInstance()->getVisibleSize();
+    
+    log("visiableSize: %f",visiableSize.height);
     return Size(visiableSize.width,visiableSize.height);
 }
 /**
