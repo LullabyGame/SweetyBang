@@ -39,7 +39,7 @@ public:
     virtual bool onTouchBegan(Touch *touch, Event *event);
     virtual void onTouchEnded(Touch *touch, Event *event);
     virtual void onTouchMoved(Touch *touch, Event *event);
-    
+
 private:
     
     /* VARIABLES */
@@ -81,6 +81,7 @@ private:
     void back2StageSelectScene();
     void addTouchListeners();
     
+    void removeAction(Node * node);
 };
 
 #endif /* defined(__LittleKnight__NormalModeScene__) */
