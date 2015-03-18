@@ -303,6 +303,13 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
         }
         lastPaintedTile = onTouchTile;
         linePassedTiles.pushBack(onTouchTile);
+//        if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
+//            auto move = ParticleSystemQuad::create("res/animation/move_spirit.plist");
+//            move->setAutoRemoveOnFinish(true);
+//            move->setPosition(Vec2(linePassedTiles.back()->getPosX() + tileSideLength / 2,linePassedTiles.back()->getPosY() + tileSideLength / 2));
+//            move->cocos2d::Node::setScale(0.5, 0.5);
+//            this->addChild(move,1);
+//        }
     }
 }
 
