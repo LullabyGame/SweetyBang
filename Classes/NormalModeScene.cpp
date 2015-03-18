@@ -363,19 +363,29 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
         
         /* 播放音效*/
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/Ka-Ching.wav");
+        
+        /* 当连线元素大于等于5个的时候出现特殊元素，每5个出现一个 */
+        if (this->linePassedTiles.size() >= 5) {
+            for (int i = 0 ; i < linePassedTiles.size(); i++) {
+                if ((i+1)%5 == 0) {
+                    int prox = linePassedTiles.at(i)->getPosX() + tileSideLength / 2;
+                    int proy = linePassedTiles.at(i)->getPosY() + tileSideLength / 2;
+                    /* 轨迹粒子效果 */
+                    auto move = ParticleSystemQuad::create("res/animation/move_spirit.plist");
+                    move->setAutoRemoveOnFinish(true);
+                    move->setPosition(Vec2(prox,proy));
+                    move->cocos2d::Node::setScale(0.5, 0.5);
+                    this->addChild(move);
+                    ccBezierConfig bezier;
+                    bezier.controlPoint_1 = Point(400, 0);         /* 控制点1*/
+                    bezier.controlPoint_2 = Point(400, 200);       /* 控制点2 */
+                    bezier.endPosition = Point(0, 200);            /* 目的地（终点）*/
+                    auto bezierBy = BezierBy::create(2.0f, bezier);/* 创建动作 */
+                    move->runAction(Sequence::create(bezierBy, CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),NULL));
+                }
+            }
+        }
     }
-    //测试轨迹粒子效果
-    auto move = ParticleSystemQuad::create("res/animation/move_spirit.plist");
-    move->setAutoRemoveOnFinish(true);
-    move->setPosition(Vec2(100,100));
-    move->cocos2d::Node::setScale(0.5, 0.5);
-    this->addChild(move);
-    ccBezierConfig bezier;
-    bezier.controlPoint_1 = Point(400, 0);        //控制点1
-    bezier.controlPoint_2 = Point(400, 200);     //控制点2
-    bezier.endPosition = Point(0, 200);            //目的地（终点）
-    auto bezierBy = BezierBy::create(2.0f, bezier);//创建动作
-    move->runAction(Sequence::create(bezierBy, CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),NULL));
     
     //
     fallDownItems();
