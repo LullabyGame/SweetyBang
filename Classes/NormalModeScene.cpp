@@ -303,13 +303,25 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
         }
         lastPaintedTile = onTouchTile;
         linePassedTiles.pushBack(onTouchTile);
-//        if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
+        
+        if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
 //            auto move = ParticleSystemQuad::create("res/animation/move_spirit.plist");
-//            move->setAutoRemoveOnFinish(true);
-//            move->setPosition(Vec2(linePassedTiles.back()->getPosX() + tileSideLength / 2,linePassedTiles.back()->getPosY() + tileSideLength / 2));
+//            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+//            log("ItemType: %d",onTouchTile->getItem()->getItemType());
+//            log("PosX: %f",onTouchTile->getPosX());
+//            log("PosY: %f",onTouchTile->getPosY());
+//            onTouchTile->getItem()->addChild(move);
+//            move->setAnchorPoint(Point::ZERO);
+//            move->setPosition(tileSideLength / 2,tileSideLength / 2);
 //            move->cocos2d::Node::setScale(0.5, 0.5);
-//            this->addChild(move,1);
-//        }
+            
+            /* 增加会产生特殊元素的标识，粒子效果有bug，图片无bug */
+            Sprite * testspr = Sprite::create("res/img/special.png");
+            onTouchTile->getItem()->addChild(testspr,1);
+            testspr->setAnchorPoint(Vec2(0.5, 0.5));
+            testspr->setPosition(Vec2(tileSideLength / 2, tileSideLength / 2));
+            testspr->setScale(0.8, 0.8);
+        }
     }
 }
 
