@@ -377,14 +377,19 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
         if (this->linePassedTiles.size() >= 5) {
             for (int i = 0 ; i < linePassedTiles.size(); i++) {
                 if ((i+1)%5 == 0) {
-                    int prox = linePassedTiles.at(i)->getPosX() + tileSideLength / 2;
-                    int proy = linePassedTiles.at(i)->getPosY() + tileSideLength / 2;
+                    int start_prox = linePassedTiles.at(i)->getPosX() + tileSideLength / 2;
+                    int start_proy = linePassedTiles.at(i)->getPosY() + tileSideLength / 2;
+                    
+                    /* 思路：随机从tile列表中取出一个tile */
+                    TileSprite* tile = tileMatrix[rand()%MATRIX_WIDTH][rand()%MATRIX_HEIGHT];
+                    int end_prox = tile->getPosX() + tileSideLength / 2;
+                    int end_proy = tile->getPosY() + tileSideLength / 2;
                     /* 叉子飞起效果 */
                     auto move = Sprite::create("res/img/chazi.png");
-                    move->setPosition(Vec2(prox,proy));
+                    move->setPosition(Vec2(start_prox,start_proy));
                     this->addChild(move);
                     move->runAction(
-                                Sequence::create(Spawn::create(MoveBy::create(1, Point(0, 200)), RotateBy::create(1, 720), NULL),
+                                Sequence::create(Spawn::create(MoveBy::create(1, Point(abs(start_prox-end_prox), abs(start_proy-end_proy))), RotateBy::create(1, 720), NULL),
                                 CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),NULL)
                                     );
                 }
