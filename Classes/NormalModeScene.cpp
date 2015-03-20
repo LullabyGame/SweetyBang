@@ -305,22 +305,12 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
         linePassedTiles.pushBack(onTouchTile);
         
         if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
-//            auto move = ParticleSystemQuad::create("res/animation/move_spirit.plist");
-//            log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-//            log("ItemType: %d",onTouchTile->getItem()->getItemType());
-//            log("PosX: %f",onTouchTile->getPosX());
-//            log("PosY: %f",onTouchTile->getPosY());
-//            onTouchTile->getItem()->addChild(move);
-//            move->setAnchorPoint(Point::ZERO);
-//            move->setPosition(tileSideLength / 2,tileSideLength / 2);
-//            move->cocos2d::Node::setScale(0.5, 0.5);
             
             /* 增加会产生特殊元素的标识，粒子效果有bug，图片无bug */
-            Sprite * testspr = Sprite::create("res/img/special.png");
+            Sprite * testspr = Sprite::create("res/img/chazi.png");
             onTouchTile->getItem()->addChild(testspr,1);
             testspr->setAnchorPoint(Vec2(0.5, 0.5));
-            testspr->setPosition(Vec2(tileSideLength / 2, tileSideLength / 2));
-            testspr->setScale(0.8, 0.8);
+            testspr->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
         }
     }
 }
@@ -389,18 +379,14 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                 if ((i+1)%5 == 0) {
                     int prox = linePassedTiles.at(i)->getPosX() + tileSideLength / 2;
                     int proy = linePassedTiles.at(i)->getPosY() + tileSideLength / 2;
-                    /* 轨迹粒子效果 */
-                    auto move = ParticleSystemQuad::create("res/animation/move_spirit.plist");
-                    move->setAutoRemoveOnFinish(true);
+                    /* 叉子飞起效果 */
+                    auto move = Sprite::create("res/img/chazi.png");
                     move->setPosition(Vec2(prox,proy));
-                    move->cocos2d::Node::setScale(0.5, 0.5);
                     this->addChild(move);
-                    ccBezierConfig bezier;
-                    bezier.controlPoint_1 = Point(400, 0);         /* 控制点1*/
-                    bezier.controlPoint_2 = Point(400, 200);       /* 控制点2 */
-                    bezier.endPosition = Point(0, 200);            /* 目的地（终点）*/
-                    auto bezierBy = BezierBy::create(2.0f, bezier);/* 创建动作 */
-                    move->runAction(Sequence::create(bezierBy, CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),NULL));
+                    move->runAction(
+                                Sequence::create(Spawn::create(MoveBy::create(1, Point(0, 200)), RotateBy::create(1, 720), NULL),
+                                CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),NULL)
+                                    );
                 }
             }
         }
