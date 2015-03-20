@@ -381,7 +381,10 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                     int start_proy = linePassedTiles.at(i)->getPosY() + tileSideLength / 2;
                     
                     /* 思路：随机从tile列表中取出一个tile */
-                    TileSprite* tile = tileMatrix[rand()%MATRIX_WIDTH][rand()%MATRIX_HEIGHT];
+                    int x = rand()%MATRIX_WIDTH;
+                    int y = rand()%MATRIX_HEIGHT;
+                    log("%d,%d",x,y);
+                    TileSprite* tile = tileMatrix[x][y];
                     int end_prox = tile->getPosX() + tileSideLength / 2;
                     int end_proy = tile->getPosY() + tileSideLength / 2;
                     /* 叉子飞起效果 */
@@ -389,8 +392,15 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                     move->setPosition(Vec2(start_prox,start_proy));
                     this->addChild(move);
                     move->runAction(
-                                Sequence::create(Spawn::create(MoveBy::create(1, Point(abs(start_prox-end_prox), abs(start_proy-end_proy))), RotateBy::create(1, 720), NULL),
-                                CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),NULL)
+                                Sequence::create(Spawn::create(MoveTo::create(1, Point(end_prox, end_proy)), RotateBy::create(1, 720), NULL),
+                                CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),
+                                CallFunc::create([tile](){
+//                                                        MessageBox("you died", "died");
+                                                        auto chazi = Sprite::create("res/img/chazi.png");
+                                                        chazi->setPosition(tileSideLength / 2, tileSideLength / 2);
+                                                        tile->addChild(chazi);
+                                                     }
+                                                ),NULL)
                                     );
                 }
             }
