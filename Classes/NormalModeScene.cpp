@@ -398,7 +398,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
 //                                                        MessageBox("you died", "died");
                                                         auto chazi = Sprite::create("res/img/chazi.png");
                                                         chazi->setPosition(tileSideLength / 2, tileSideLength / 2);
-                                                        tile->addChild(chazi);
+                                                        tile->getItem()->addChild(chazi);
                                                      }
                                                 ),NULL)
                                     );
