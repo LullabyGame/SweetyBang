@@ -71,3 +71,11 @@ int ItemSprite::getItemType() {
 void ItemSprite::setItemType(int itemType) {
     this->itemType = itemType;
 }
+
+int ItemSprite::getItemSpecialType(){
+    return this->itemSpecialType;
+}
+
+void ItemSprite::setItemSpecialType(int itemSpecialType){
+    this->itemSpecialType = itemSpecialType;
+}

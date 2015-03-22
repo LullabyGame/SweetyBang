@@ -100,7 +100,7 @@ void NormalModeScene::loadStageInfo() {
     std::string data = FileUtils::getInstance()->getStringFromFile(stageName);
     rapidjson::Document doc;
     doc.Parse<rapidjson::kParseDefaultFlags>(data.c_str());
-
+    
     /* 初始化Tile和Item */
     rapidjson::Value& tileInfo = doc["tiles"];
     initTilesAndItems(tileInfo);
@@ -215,7 +215,7 @@ void NormalModeScene::initMenuBar() {
     scoreNowLabel->setPosition(Point(visiableSize.width / 2, visiableSize.height - 210));
     scoreNowLabel->setVisible(false);
     background->addChild(scoreNowLabel);
-
+    
 }
 
 
@@ -245,6 +245,9 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
     if (onTouchTile != NULL) {
         // CCLOG("当前选中的为Tile[%d][%d]", currentTile->getArrayX(), currentTile->getArrayY());
         lastPaintedTile = onTouchTile;
+    }
+    if (onTouchTile->getItem()->getItemSpecialType() == 1) {
+        /*  此处添加删除范围的遮罩效果 */
     }
     return true;
 }
@@ -307,7 +310,7 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
         if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
             
             /* 增加会产生特殊元素的标识，粒子效果有bug，图片无bug */
-            Sprite * testspr = Sprite::create("res/img/chazi.png");
+            Sprite * testspr = Sprite::create("res/img/chazi_shu.png");
             onTouchTile->getItem()->addChild(testspr,1);
             testspr->setAnchorPoint(Vec2(0.5, 0.5));
             testspr->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
@@ -328,7 +331,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
         removeChild(line);
     }
     lines.clear();
-
+    
     // 移除Item
     if (this->linePassedTiles.size() >= 3) {
         for (TileSprite* tile : linePassedTiles) {
@@ -388,19 +391,33 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                     int end_prox = tile->getPosX() + tileSideLength / 2;
                     int end_proy = tile->getPosY() + tileSideLength / 2;
                     /* 叉子飞起效果 */
-                    auto move = Sprite::create("res/img/chazi.png");
+                    auto move = Sprite::create("res/img/chazi_shu.png");
                     move->setPosition(Vec2(start_prox,start_proy));
                     this->addChild(move);
                     move->runAction(
-                                Sequence::create(Spawn::create(MoveTo::create(1, Point(end_prox, end_proy)), RotateBy::create(1, 720), NULL),
-                                CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),
-                                CallFunc::create([tile](){
-//                                                        MessageBox("you died", "died");
-                                                        auto chazi = Sprite::create("res/img/chazi.png");
-                                                        chazi->setPosition(tileSideLength / 2, tileSideLength / 2);
-                                                        tile->getItem()->addChild(chazi);
-                                                     }
-                                                ),NULL)
+                                    Sequence::create(Spawn::create(MoveTo::create(1, Point(end_prox, end_proy)), RotateBy::create(1, 720), NULL),
+                                                     CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),
+                                                     CallFunc::create([tile](){
+                                        auto chazi = Sprite::create("res/img/chazi_shu.png");
+                                        chazi->setPosition(tileSideLength / 2, tileSideLength / 2);
+                                        tile->getItem()->addChild(chazi);
+                                        int itemSpecialType = tile->getItem()->getItemSpecialType();
+                                        if (itemSpecialType == 0) {
+                                            log("%d",itemSpecialType);
+                                            tile->getItem()->setItemSpecialType(1);
+                                        }else if (itemSpecialType == 1){
+                                            log("%d",itemSpecialType);
+                                            tile->getItem()->setItemSpecialType(2);
+                                        }else if (itemSpecialType == 2){
+                                            log("%d",itemSpecialType);
+                                            tile->getItem()->setItemSpecialType(3);
+                                        }else if (itemSpecialType == 3){
+                                            log("%d",itemSpecialType);
+                                            tile->getItem()->setItemSpecialType(3);
+                                        }
+                                    }
+                                                                      ),NULL
+                                                     )
                                     );
                 }
             }

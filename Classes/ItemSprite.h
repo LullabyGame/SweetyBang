@@ -23,6 +23,14 @@ enum BasicItemType {
     SugarCookie
 };
 
+/* 区别特殊元素的性质 */
+enum SpecialType{
+    Aommon,
+    Across,
+    Vertical,
+    Region
+};
+
 class ItemSprite : public Sprite {
     
 public:
@@ -32,9 +40,12 @@ public:
     
     int getItemType();
     void setItemType(int itemType);
+    int getItemSpecialType();
+    void setItemSpecialType(int itemSpecialType);
     
 private:
     int itemType;
+    int itemSpecialType;
     
 };
 
