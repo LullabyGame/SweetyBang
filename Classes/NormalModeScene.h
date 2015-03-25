@@ -54,6 +54,7 @@ private:
     
     TileSprite* tileMatrix[MATRIX_WIDTH][MATRIX_HEIGHT] = {0};
     TileSprite* lastPaintedTile;
+    LayerColor* speciallayer;// 遮挡不能连线的元素
     cocos2d::Vector<TileSprite*> linePassedTiles;
     cocos2d::Vector<LineSprite*> lines;
     cocos2d::Vector<LayerColor*> layerColors;

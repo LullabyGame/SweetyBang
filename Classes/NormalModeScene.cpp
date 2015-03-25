@@ -248,6 +248,15 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
     }
     if (onTouchTile->getItem()->getItemSpecialType() == 1) {
         /*  此处添加删除范围的遮罩效果 */
+//        int x = onTouchTile->getArrayX();
+//        int y = onTouchTile->getArrayY();
+//        for (int i = 0; i < MATRIX_HEIGHT; i++) {
+//            speciallayer = LayerColor::create(Color4B(54, 54, 54, 100), tileSideLength, tileSideLength);
+//            speciallayer->setAnchorPoint(Point(0.5, 0.5));
+//            speciallayer->setPosition(Vec2(0, 0));
+//            tileMatrix[x][i]->getItem()->addChild(speciallayer);
+//        }
+        
     }
     return true;
 }
@@ -307,13 +316,15 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
         lastPaintedTile = onTouchTile;
         linePassedTiles.pushBack(onTouchTile);
         
+        /* 增加会产生特殊元素的标识*/
         if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
-            
-            /* 增加会产生特殊元素的标识，粒子效果有bug，图片无bug */
             Sprite * testspr = Sprite::create("res/img/chazi_shu.png");
             onTouchTile->getItem()->addChild(testspr,1);
             testspr->setAnchorPoint(Vec2(0.5, 0.5));
+            testspr->setTag(1);
+            testspr->setScale(0.7, 0.7);
             testspr->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
+            testspr->runAction(RepeatForever::create(RotateBy::create(1, 720)));
         }
     }
 }
@@ -386,7 +397,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                     /* 思路：随机从tile列表中取出一个tile */
                     int x = rand()%MATRIX_WIDTH;
                     int y = rand()%MATRIX_HEIGHT;
-                    log("%d,%d",x,y);
+//                    log("%d,%d",x,y);
                     TileSprite* tile = tileMatrix[x][y];
                     int end_prox = tile->getPosX() + tileSideLength / 2;
                     int end_proy = tile->getPosY() + tileSideLength / 2;
@@ -399,7 +410,9 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                                                      CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),
                                                      CallFunc::create([tile](){
                                         auto chazi = Sprite::create("res/img/chazi_shu.png");
-                                        chazi->setPosition(tileSideLength / 2, tileSideLength / 2);
+                                        chazi->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
+                                        chazi->setTag(2);
+                                        chazi->setScale(0.7, 0.7);
                                         tile->getItem()->addChild(chazi);
                                         int itemSpecialType = tile->getItem()->getItemSpecialType();
                                         if (itemSpecialType == 0) {
@@ -416,7 +429,8 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                                             tile->getItem()->setItemSpecialType(3);
                                         }
                                     }
-                                                                      ),NULL
+                                                                      ),
+                                                     NULL
                                                      )
                                     );
                 }
@@ -553,6 +567,8 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
             removeChild(sprite);
             lines.erase(lines.find(sprite));
             linePassedTiles.erase(linePassedTiles.find(sprite->getEndTile()));
+            /* 删除特殊元素标识 */
+            sprite->getEndTile()->getItem()->removeChildByTag(1);
             deleteDepetitionLine(sprite->getEndTile());
             break;
         }
