@@ -247,15 +247,36 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
         lastPaintedTile = onTouchTile;
     }
     if (onTouchTile->getItem()->getItemSpecialType() == 1) {
-        /*  此处添加删除范围的遮罩效果 */
-//        int x = onTouchTile->getArrayX();
-//        int y = onTouchTile->getArrayY();
-//        for (int i = 0; i < MATRIX_HEIGHT; i++) {
-//            speciallayer = LayerColor::create(Color4B(54, 54, 54, 100), tileSideLength, tileSideLength);
-//            speciallayer->setAnchorPoint(Point(0.5, 0.5));
-//            speciallayer->setPosition(Vec2(0, 0));
-//            tileMatrix[x][i]->getItem()->addChild(speciallayer);
-//        }
+        /*  此处添加删除范围的动画效果 */
+        int x = onTouchTile->getArrayX();
+        int y = onTouchTile->getArrayY();
+        auto cache = SpriteFrameCache::getInstance();
+        cache->addSpriteFramesWithFile("res/animation/chahaoxulie.plist");
+        Vector<SpriteFrame*> vec;
+        char name[20];
+        memset(name, 0, 20);
+        for (int i = 0; i < MATRIX_HEIGHT; i++) {
+            for (int j = 0; j < 16; j++) {
+                sprintf(name, "y1%04d",j);
+                vec.pushBack(cache->getSpriteFrameByName(name));
+            }
+            Animation * animation = Animation::createWithSpriteFrames(vec,0.05f);
+            Animate * animate = Animate::create(animation);
+            
+            spriteAction = Sprite::create();
+            /* 此处防止地图中间有空的tile */
+            if (tileMatrix[x][i] != NULL) {
+                tileMatrix[x][i]->getItem()->addChild(spriteAction);
+                spriteAction->setAnchorPoint(Point(0, 0));
+                spriteAction->setPosition(Vec2(0, 0));
+                spriteAction->setScale(0.7, 0.7);
+                spriteAction->setTag(4);
+                spriteAction->runAction(RepeatForever::create(animate));
+                /* 停止动作后重启动作 */
+                Director::getInstance()->getActionManager()->pauseTarget(spriteAction);
+                Director::getInstance()->getActionManager()->resumeTarget(spriteAction);
+            }
+        }
         
     }
     return true;
@@ -319,12 +340,16 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
         /* 增加会产生特殊元素的标识*/
         if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
             Sprite * testspr = Sprite::create("res/img/chazi_shu.png");
-            onTouchTile->getItem()->addChild(testspr,1);
+            
             testspr->setAnchorPoint(Vec2(0.5, 0.5));
             testspr->setTag(1);
             testspr->setScale(0.7, 0.7);
             testspr->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
+            onTouchTile->getItem()->addChild(testspr,1);
             testspr->runAction(RepeatForever::create(RotateBy::create(1, 720)));
+            /* 停止动作后重启动作 */
+            Director::getInstance()->getActionManager()->pauseTarget(testspr);
+            Director::getInstance()->getActionManager()->resumeTarget(testspr);
         }
     }
 }
@@ -397,7 +422,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                     /* 思路：随机从tile列表中取出一个tile */
                     int x = rand()%MATRIX_WIDTH;
                     int y = rand()%MATRIX_HEIGHT;
-//                    log("%d,%d",x,y);
+                    //                    log("%d,%d",x,y);
                     TileSprite* tile = tileMatrix[x][y];
                     int end_prox = tile->getPosX() + tileSideLength / 2;
                     int end_proy = tile->getPosY() + tileSideLength / 2;
@@ -415,24 +440,35 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                                         chazi->setScale(0.7, 0.7);
                                         tile->getItem()->addChild(chazi);
                                         int itemSpecialType = tile->getItem()->getItemSpecialType();
+                                        /* 给特殊元素设置标记 */
                                         if (itemSpecialType == 0) {
                                             log("%d",itemSpecialType);
                                             tile->getItem()->setItemSpecialType(1);
-                                        }else if (itemSpecialType == 1){
-                                            log("%d",itemSpecialType);
-                                            tile->getItem()->setItemSpecialType(2);
-                                        }else if (itemSpecialType == 2){
-                                            log("%d",itemSpecialType);
-                                            tile->getItem()->setItemSpecialType(3);
-                                        }else if (itemSpecialType == 3){
-                                            log("%d",itemSpecialType);
-                                            tile->getItem()->setItemSpecialType(3);
                                         }
+                                        //                                            else if (itemSpecialType == 1){
+                                        //                                            log("%d",itemSpecialType);
+                                        //                                            tile->getItem()->setItemSpecialType(2);
+                                        //                                        }else if (itemSpecialType == 2){
+                                        //                                            log("%d",itemSpecialType);
+                                        //                                            tile->getItem()->setItemSpecialType(3);
+                                        //                                        }else if (itemSpecialType == 3){
+                                        //                                            log("%d",itemSpecialType);
+                                        //                                            tile->getItem()->setItemSpecialType(3);
+                                        //                                        }
                                     }
                                                                       ),
                                                      NULL
                                                      )
                                     );
+                }
+            }
+        }
+    }else{
+        /* 当连线不够三个的时候不作处理，但是删除特殊元素的效果 */
+        for (int i = 0; i < MATRIX_WIDTH; i++) {
+            for (int j = 0; j < MATRIX_HEIGHT ; j++) {
+                if (tileMatrix[i][j] != NULL) {
+                    tileMatrix[i][j]->getItem()->removeChildByTag(4);
                 }
             }
         }
