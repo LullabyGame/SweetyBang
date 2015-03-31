@@ -324,6 +324,13 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
             Director::getInstance()->getActionManager()->pauseTarget(testspr);
             Director::getInstance()->getActionManager()->resumeTarget(testspr);
         }
+        /* 如果遇到特殊元素操作 */
+        if (onTouchTile != NULL) {
+            if (onTouchTile->getItem()->getItemSpecialType() == 1) {
+                itemSpecialAction(1,onTouchTile);
+            }
+        }
+        
     }
 }
 
