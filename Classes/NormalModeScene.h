@@ -59,6 +59,7 @@ private:
     cocos2d::Vector<TileSprite*> linePassedTiles;
     cocos2d::Vector<LineSprite*> lines;
     cocos2d::Vector<LayerColor*> layerColors;
+    cocos2d::Vector<TileSprite*> itemSpecialVector;//存储特殊元素消除的item
     
     Label* targetScoreLabel;
     Label* currentScoreLabel;
@@ -84,6 +85,8 @@ private:
     void addTouchListeners();
     
     void removeAction(Node * node);
+    
+    void itemSpecialAction(int itemSpecialType, TileSprite* onTouchTile);//对特殊元素的处理：1、增加动画效果。2、把需要删除的item放入列表中
 };
 
 #endif /* defined(__LittleKnight__NormalModeScene__) */

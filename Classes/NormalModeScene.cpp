@@ -245,39 +245,10 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
     if (onTouchTile != NULL) {
         // CCLOG("当前选中的为Tile[%d][%d]", currentTile->getArrayX(), currentTile->getArrayY());
         lastPaintedTile = onTouchTile;
-    }
-    if (onTouchTile->getItem()->getItemSpecialType() == 1) {
-        /*  此处添加删除范围的动画效果 */
-        int x = onTouchTile->getArrayX();
-        int y = onTouchTile->getArrayY();
-        auto cache = SpriteFrameCache::getInstance();
-        cache->addSpriteFramesWithFile("res/animation/chahaoxulie.plist");
-        Vector<SpriteFrame*> vec;
-        char name[20];
-        memset(name, 0, 20);
-        for (int i = 0; i < MATRIX_HEIGHT; i++) {
-            for (int j = 0; j < 16; j++) {
-                sprintf(name, "y1%04d",j);
-                vec.pushBack(cache->getSpriteFrameByName(name));
-            }
-            Animation * animation = Animation::createWithSpriteFrames(vec,0.05f);
-            Animate * animate = Animate::create(animation);
-            
-            spriteAction = Sprite::create();
-            /* 此处防止地图中间有空的tile */
-            if (tileMatrix[x][i] != NULL) {
-                tileMatrix[x][i]->getItem()->addChild(spriteAction);
-                spriteAction->setAnchorPoint(Point(0, 0));
-                spriteAction->setPosition(Vec2(0, 0));
-                spriteAction->setScale(0.7, 0.7);
-                spriteAction->setTag(4);
-                spriteAction->runAction(RepeatForever::create(animate));
-                /* 停止动作后重启动作 */
-                Director::getInstance()->getActionManager()->pauseTarget(spriteAction);
-                Director::getInstance()->getActionManager()->resumeTarget(spriteAction);
-            }
+        linePassedTiles.pushBack(lastPaintedTile);
+        if (onTouchTile->getItem()->getItemSpecialType() == 1) {
+            itemSpecialAction(1,onTouchTile);
         }
-        
     }
     return true;
 }
@@ -331,11 +302,13 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
         lines.pushBack(line);
         
         // add the on touch tile into the "linePassedTiles" list
+        //这个if或许需要删除
         if (!linePassedTiles.contains(lastPaintedTile)) {
             linePassedTiles.pushBack(lastPaintedTile);
         }
         lastPaintedTile = onTouchTile;
         linePassedTiles.pushBack(onTouchTile);
+        
         
         /* 增加会产生特殊元素的标识*/
         if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
@@ -370,6 +343,50 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
     
     // 移除Item
     if (this->linePassedTiles.size() >= 3) {
+        /* 当连线元素大于等于5个的时候出现特殊元素，每5个出现一个 */
+        /* 特殊元素消除的区域不作为奖励 */
+        if (this->linePassedTiles.size() >= 5) {
+            for (int i = 0 ; i < linePassedTiles.size(); i++) {
+                if ((i+1)%5 == 0) {
+                    int start_prox = linePassedTiles.at(i)->getPosX() + tileSideLength / 2;
+                    int start_proy = linePassedTiles.at(i)->getPosY() + tileSideLength / 2;
+                    
+                    /* 思路：随机从tile列表中取出一个tile */
+                    int x = rand()%MATRIX_WIDTH;
+                    int y = rand()%MATRIX_HEIGHT;
+                    //                    log("%d,%d",x,y);
+                    TileSprite* tile = tileMatrix[x][y];
+                    int end_prox = tile->getPosX() + tileSideLength / 2;
+                    int end_proy = tile->getPosY() + tileSideLength / 2;
+                    /* 叉子飞起效果 */
+                    auto move = Sprite::create("res/img/chazi_shu.png");
+                    move->setPosition(Vec2(start_prox,start_proy));
+                    this->addChild(move);
+                    move->runAction(
+                                    Sequence::create(
+                                        Spawn::create(MoveTo::create(1, Point(end_prox, end_proy)), RotateBy::create(1, 720), NULL),
+                                        CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),
+                                        CallFunc::create([tile](){
+                                            auto chazi = Sprite::create("res/img/chazi_shu.png");
+                                            chazi->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
+                                            chazi->setTag(2);
+                                            chazi->setScale(0.7, 0.7);
+                                            tile->getItem()->addChild(chazi);
+                                            int itemSpecialType = tile->getItem()->getItemSpecialType();
+                                            /* 给特殊元素设置标记 */
+                                            if (itemSpecialType == 0) {
+                                                log("%d",itemSpecialType);
+                                                tile->getItem()->setItemSpecialType(1);
+                                            }
+                                        }),NULL
+                                    )
+                    );
+                }
+            }
+        }
+        
+        /* 如果连线元素大于3个，把特殊元素导致删除的元素加进来 */
+        linePassedTiles.pushBack(itemSpecialVector);
         for (TileSprite* tile : linePassedTiles) {
             
             /* 加载粒子效果 */
@@ -412,57 +429,6 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
         /* 播放音效*/
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/Ka-Ching.wav");
         
-        /* 当连线元素大于等于5个的时候出现特殊元素，每5个出现一个 */
-        if (this->linePassedTiles.size() >= 5) {
-            for (int i = 0 ; i < linePassedTiles.size(); i++) {
-                if ((i+1)%5 == 0) {
-                    int start_prox = linePassedTiles.at(i)->getPosX() + tileSideLength / 2;
-                    int start_proy = linePassedTiles.at(i)->getPosY() + tileSideLength / 2;
-                    
-                    /* 思路：随机从tile列表中取出一个tile */
-                    int x = rand()%MATRIX_WIDTH;
-                    int y = rand()%MATRIX_HEIGHT;
-                    //                    log("%d,%d",x,y);
-                    TileSprite* tile = tileMatrix[x][y];
-                    int end_prox = tile->getPosX() + tileSideLength / 2;
-                    int end_proy = tile->getPosY() + tileSideLength / 2;
-                    /* 叉子飞起效果 */
-                    auto move = Sprite::create("res/img/chazi_shu.png");
-                    move->setPosition(Vec2(start_prox,start_proy));
-                    this->addChild(move);
-                    move->runAction(
-                                    Sequence::create(Spawn::create(MoveTo::create(1, Point(end_prox, end_proy)), RotateBy::create(1, 720), NULL),
-                                                     CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),
-                                                     CallFunc::create([tile](){
-                                        auto chazi = Sprite::create("res/img/chazi_shu.png");
-                                        chazi->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
-                                        chazi->setTag(2);
-                                        chazi->setScale(0.7, 0.7);
-                                        tile->getItem()->addChild(chazi);
-                                        int itemSpecialType = tile->getItem()->getItemSpecialType();
-                                        /* 给特殊元素设置标记 */
-                                        if (itemSpecialType == 0) {
-                                            log("%d",itemSpecialType);
-                                            tile->getItem()->setItemSpecialType(1);
-                                        }
-                                        //                                            else if (itemSpecialType == 1){
-                                        //                                            log("%d",itemSpecialType);
-                                        //                                            tile->getItem()->setItemSpecialType(2);
-                                        //                                        }else if (itemSpecialType == 2){
-                                        //                                            log("%d",itemSpecialType);
-                                        //                                            tile->getItem()->setItemSpecialType(3);
-                                        //                                        }else if (itemSpecialType == 3){
-                                        //                                            log("%d",itemSpecialType);
-                                        //                                            tile->getItem()->setItemSpecialType(3);
-                                        //                                        }
-                                    }
-                                                                      ),
-                                                     NULL
-                                                     )
-                                    );
-                }
-            }
-        }
     }else{
         /* 当连线不够三个的时候不作处理，但是删除特殊元素的效果 */
         for (int i = 0; i < MATRIX_WIDTH; i++) {
@@ -635,4 +601,47 @@ int NormalModeScene::getStage() {
 
 void NormalModeScene::setStage(int stage) {
     this->stage = stage;
+}
+
+
+/**
+ *  对特殊元素的处理：
+ *      1、增加动画效果。
+ *      2、把需要删除的item放入列表中.
+ *
+ */
+void NormalModeScene::itemSpecialAction(int itemSpecialType, TileSprite *onTouchTile){
+    /*  此处添加删除范围的动画效果 */
+    int x = onTouchTile->getArrayX();
+    int y = onTouchTile->getArrayY();
+    auto cache = SpriteFrameCache::getInstance();
+    cache->addSpriteFramesWithFile("res/animation/chahaoxulie.plist");
+    Vector<SpriteFrame*> vec;
+    char name[20];
+    memset(name, 0, 20);
+
+    for (int i = 0; i < MATRIX_HEIGHT; i++) {
+        for (int j = 0; j < 16; j++) {
+            sprintf(name, "y1%04d",j);
+            vec.pushBack(cache->getSpriteFrameByName(name));
+        }
+        Animation * animation = Animation::createWithSpriteFrames(vec,0.05f);
+        Animate * animate = Animate::create(animation);
+        spriteAction = Sprite::create();
+        /* 此处防止地图中间有空的tile */
+        if (tileMatrix[x][i] != NULL) {
+            tileMatrix[x][i]->getItem()->addChild(spriteAction);
+            /* 如果第一次点击的元素是特殊元素，那么判断特殊元素的性质把对应需要消除的格子放到itemSpecialVector里面
+             在消除的时候如果判断连线元素大于3个以后，把连线的的vector和特殊元素的vector结合在一起 */
+            itemSpecialVector.pushBack(tileMatrix[x][i]);
+            spriteAction->setAnchorPoint(Point(0, 0));
+            spriteAction->setPosition(Vec2(0, 0));
+            spriteAction->setScale(0.7, 0.7);
+            spriteAction->setTag(4);
+            spriteAction->runAction(RepeatForever::create(animate));
+            /* 停止动作后重启动作 */
+            Director::getInstance()->getActionManager()->pauseTarget(spriteAction);
+            Director::getInstance()->getActionManager()->resumeTarget(spriteAction);
+        }
+    }
 }
