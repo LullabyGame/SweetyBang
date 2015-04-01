@@ -249,9 +249,7 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
         if (onTouchTile->getItem()->getItemSpecialType() == 1) {
             itemSpecialAction(1,onTouchTile);
         }else if (onTouchTile->getItem()->getItemSpecialType() == 2){
-            
-        }else if (onTouchTile->getItem()->getItemSpecialType() == 3){
-            
+            itemSpecialAction(2,onTouchTile);
         }
     }
     return true;
@@ -333,9 +331,7 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
             if (onTouchTile->getItem()->getItemSpecialType() == 1) {
                 itemSpecialAction(1,onTouchTile);
             }else if (onTouchTile->getItem()->getItemSpecialType() == 2){
-                
-            }else if (onTouchTile->getItem()->getItemSpecialType() == 3){
-                
+                itemSpecialAction(2,onTouchTile);
             }
         }
         
@@ -388,21 +384,24 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                                         Spawn::create(MoveTo::create(1, Point(end_prox, end_proy)), RotateBy::create(1, 720), NULL),
                                         CallFuncN::create(CC_CALLBACK_1(NormalModeScene::removeAction,this)),
                                         CallFunc::create([tile](){
-                                            auto chazi = Sprite::create("res/img/chazi_shu.png");
-                                            chazi->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
-                                            chazi->setTag(2);
-                                            chazi->setScale(0.7, 0.7);
-                                            tile->getItem()->addChild(chazi);
-                                            int itemSpecialType = tile->getItem()->getItemSpecialType();
-                                            /* 给特殊元素设置标记 */
-                                            if (itemSpecialType == 0) {
+                                            /* 取一个0或者1的随机数，0给出的特殊元素是一列，1给出的特殊元素是一行 */
+                                            int directionType = rand()%2;
+                                            if (directionType == 0) {
+                                                auto chazi_shu = Sprite::create("res/img/chazi_shu.png");
+                                                chazi_shu->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
+                                                chazi_shu->setTag(2);
+                                                chazi_shu->setScale(0.7, 0.7);
+                                                tile->getItem()->addChild(chazi_shu);
+                                                /* 给特殊元素设置标记 */
                                                 tile->getItem()->setItemSpecialType(1);
-                                            }else if (itemSpecialType == 1){
-                                                
-                                            }else if (itemSpecialType == 2){
-                                                
-                                            }else if (itemSpecialType == 3){
-                                                
+                                            }else{
+                                                auto chazi_heng = Sprite::create("res/img/chazi_heng.png");
+                                                chazi_heng->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
+                                                chazi_heng->setTag(2);
+                                                chazi_heng->setScale(0.7, 0.7);
+                                                tile->getItem()->addChild(chazi_heng);
+                                                /* 给特殊元素设置标记 */
+                                                tile->getItem()->setItemSpecialType(2);
                                             }
                                         }),NULL
                                     )
@@ -604,12 +603,18 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
                 for (int i = 0; i < MATRIX_HEIGHT; i++) {
                     if (tileMatrix[sprite->getEndTile()->getArrayX()][i] != NULL) {
                         tileMatrix[sprite->getEndTile()->getArrayX()][i]->getItem()->removeChildByTag(4);
+                        /* 删掉特殊元素列表中的撤销的元素数据 */
+                        itemSpecialVector.erase(itemSpecialVector.find(tileMatrix[sprite->getEndTile()->getArrayX()][i]));
                     }
                 }
             }else if (sprite->getEndTile()->getItem()->getItemSpecialType() == 2){
-                
-            }else if (sprite->getEndTile()->getItem()->getItemSpecialType() == 3){
-                
+                for (int i = 0; i < MATRIX_WIDTH; i++) {
+                    if (tileMatrix[i][sprite->getEndTile()->getArrayY()] != NULL) {
+                        tileMatrix[i][sprite->getEndTile()->getArrayY()]->getItem()->removeChildByTag(4);
+                        /* 删掉特殊元素列表中的撤销的元素数据 */
+                        itemSpecialVector.erase(itemSpecialVector.find(tileMatrix[i][sprite->getEndTile()->getArrayY()]));
+                    }
+                }
             }
             
             deleteDepetitionLine(sprite->getEndTile());
@@ -687,8 +692,29 @@ void NormalModeScene::itemSpecialAction(int itemSpecialType, TileSprite *onTouch
             }
         }
     }else if (itemSpecialType == 2){
-        
-    }else if (itemSpecialType == 3){
-        
+        for (int i = 0; i < MATRIX_WIDTH; i++) {
+            for (int j = 0; j < 16; j++) {
+                sprintf(name, "y1%04d",j);
+                vec.pushBack(cache->getSpriteFrameByName(name));
+            }
+            Animation * animation = Animation::createWithSpriteFrames(vec,0.05f);
+            Animate * animate = Animate::create(animation);
+            spriteAction = Sprite::create();
+            /* 此处防止地图中间有空的tile */
+            if (tileMatrix[i][y] != NULL) {
+                tileMatrix[i][y]->getItem()->addChild(spriteAction);
+                /* 如果第一次点击的元素是特殊元素，那么判断特殊元素的性质把对应需要消除的格子放到itemSpecialVector里面
+                 在消除的时候如果判断连线元素大于3个以后，把连线的的vector和特殊元素的vector结合在一起 */
+                itemSpecialVector.pushBack(tileMatrix[i][y]);
+                spriteAction->setAnchorPoint(Point(0, 0));
+                spriteAction->setPosition(Vec2(0, 0));
+                spriteAction->setScale(0.7, 0.7);
+                spriteAction->setTag(4);
+                spriteAction->runAction(RepeatForever::create(animate));
+                /* 停止动作后重启动作 */
+                Director::getInstance()->getActionManager()->pauseTarget(spriteAction);
+                Director::getInstance()->getActionManager()->resumeTarget(spriteAction);
+            }
+        }
     }
 }
