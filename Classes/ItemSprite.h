@@ -42,10 +42,13 @@ public:
     void setItemType(int itemType);
     int getItemSpecialType();
     void setItemSpecialType(int itemSpecialType);
+    std::string getItemSpecialNomber();
+    void setItemSpecialNomber(std::string itemSpecialNomber);
     
 private:
     int itemType;
-    int itemSpecialType;
+    int itemSpecialType; //存储特殊元素的类型，1、竖，2、横
+    std::string itemSpecialNomber;//存储特殊元素的编码
     
 };
 

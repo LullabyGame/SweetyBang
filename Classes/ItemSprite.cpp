@@ -79,3 +79,11 @@ int ItemSprite::getItemSpecialType(){
 void ItemSprite::setItemSpecialType(int itemSpecialType){
     this->itemSpecialType = itemSpecialType;
 }
+
+std::string ItemSprite::getItemSpecialNomber(){
+    return this->itemSpecialNomber;
+}
+
+void ItemSprite::setItemSpecialNomber(std::string itemSpecialNomber){
+    this->itemSpecialNomber = itemSpecialNomber;
+}
