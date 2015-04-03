@@ -365,6 +365,8 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
  */
 void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
     Size visiableSize = Director::getInstance()->getVisibleSize();
+    Point touchPoint = touch->getLocation();
+    TileSprite* onTouchTile = getOnTouchTile(touchPoint.x, touchPoint.y);
     // remove lines
     for(auto line : lines) {
         removeChild(line);
@@ -454,6 +456,8 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
             /* 移除item */
             tile->removeChild(tile->getItem());
             tile->setItem(NULL);
+            
+            itemSpecialVector.clear();
         }
         
         /* 记录分数 */
@@ -484,13 +488,32 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/Ka-Ching.wav");
         
     }else{
-        /* 当连线不够三个的时候不作处理，但是删除特殊元素的效果 */
-        for (int i = 0; i < MATRIX_WIDTH; i++) {
-            for (int j = 0; j < MATRIX_HEIGHT ; j++) {
-                if (tileMatrix[i][j] != NULL) {
-                    tileMatrix[i][j]->getItem()->removeChildByTag(4);
+        if (onTouchTile->getItem()->getItemSpecialType() != 0) {
+            /* 当连线不够三个的时候不作处理，但是删除特殊元素的效果 */
+            
+            for (int i = 0; i < MATRIX_WIDTH; i++) {
+                for (int j = 0; j < MATRIX_HEIGHT ; j++) {
+                    if (tileMatrix[i][j] != NULL) {
+                        tileMatrix[i][j]->getItem()->removeChildByTag(4);
+                    }
                 }
             }
+            
+            /* 如果特殊元素跟着走了，不做消除操作的时候特殊元素回到原始位置 */
+            /* 把特殊元素放回原来的位置后，清除其他曾经经过的痕迹 */
+            for (int i = 0; i < linePassedTiles.size(); i++ ) {
+                TileSprite *tileSprite = linePassedTiles.at(i);
+                if (tileSprite->getItem()->getItemSpecialNomber() == onTouchTile->getItem()->getItemSpecialNomber()) {
+                    tileSprite->getItem()->addChild(onTouchTile->getItem()->getChildByTag(2));
+                    for (int j = i+1; j < linePassedTiles.size(); j++ ) {
+                        linePassedTiles.at(j)->getItem()->removeChildByTag(2);
+                        linePassedTiles.at(j)->getItem()->setItemSpecialNomber("");
+                        linePassedTiles.at(j)->getItem()->setItemSpecialType(0);
+                    }
+                    break;
+                }
+            }
+            itemSpecialVector.clear();
         }
     }
     
@@ -625,8 +648,8 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
             removeChild(sprite);
             lines.erase(lines.find(sprite));
             linePassedTiles.erase(linePassedTiles.find(sprite->getEndTile()));
-//            /* 删除特殊元素标识 */
-//            sprite->getEndTile()->getItem()->removeChildByTag(1);
+            /* 删除特殊元素标识 */
+            sprite->getEndTile()->getItem()->removeChildByTag(1);
 //            /* 删除特殊元素标记的区域标识 */
 //            if (sprite->getEndTile()->getItem()->getItemSpecialType() == 1) {
 //                for (int i = 0; i < MATRIX_HEIGHT; i++) {
@@ -646,7 +669,8 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
 //                }
 //            }
             
-            if (sprite->getEndTile()->getItem()->getItemSpecialNomber() == onTouchTile->getItem()->getItemSpecialNomber()) {
+            if (sprite->getEndTile()->getItem()->getItemSpecialNomber() == onTouchTile->getItem()->getItemSpecialNomber() &&
+                onTouchTile->getItem()->getItemSpecialNomber() != "") {
                 /* 1、当前元素有特殊元素经过的记录 */
                 onTouchTile->getItem()->addChild(sprite->getEndTile()->getItem()->getChildByTag(2));
                 itemSpecialAction(onTouchTile->getItem()->getItemSpecialType(), onTouchTile);
