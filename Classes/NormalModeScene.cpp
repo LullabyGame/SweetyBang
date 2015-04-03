@@ -650,31 +650,12 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
             linePassedTiles.erase(linePassedTiles.find(sprite->getEndTile()));
             /* 删除特殊元素标识 */
             sprite->getEndTile()->getItem()->removeChildByTag(1);
-//            /* 删除特殊元素标记的区域标识 */
-//            if (sprite->getEndTile()->getItem()->getItemSpecialType() == 1) {
-//                for (int i = 0; i < MATRIX_HEIGHT; i++) {
-//                    if (tileMatrix[sprite->getEndTile()->getArrayX()][i] != NULL) {
-//                        tileMatrix[sprite->getEndTile()->getArrayX()][i]->getItem()->removeChildByTag(4);
-//                        /* 删掉特殊元素列表中的撤销的元素数据 */
-//                        itemSpecialVector.erase(itemSpecialVector.find(tileMatrix[sprite->getEndTile()->getArrayX()][i]));
-//                    }
-//                }
-//            }else if (sprite->getEndTile()->getItem()->getItemSpecialType() == 2){
-//                for (int i = 0; i < MATRIX_WIDTH; i++) {
-//                    if (tileMatrix[i][sprite->getEndTile()->getArrayY()] != NULL) {
-//                        tileMatrix[i][sprite->getEndTile()->getArrayY()]->getItem()->removeChildByTag(4);
-//                        /* 删掉特殊元素列表中的撤销的元素数据 */
-//                        itemSpecialVector.erase(itemSpecialVector.find(tileMatrix[i][sprite->getEndTile()->getArrayY()]));
-//                    }
-//                }
-//            }
-            
             if (sprite->getEndTile()->getItem()->getItemSpecialNomber() == onTouchTile->getItem()->getItemSpecialNomber() &&
                 onTouchTile->getItem()->getItemSpecialNomber() != "") {
                 /* 1、当前元素有特殊元素经过的记录 */
                 onTouchTile->getItem()->addChild(sprite->getEndTile()->getItem()->getChildByTag(2));
                 itemSpecialAction(onTouchTile->getItem()->getItemSpecialType(), onTouchTile);
-                
+                /* 清除上一个特殊元素的效果 */
                 sprite->getEndTile()->getItem()->setItemSpecialNomber("");
                 sprite->getEndTile()->getItem()->setItemSpecialType(0);
                 sprite->getEndTile()->getItem()->removeChildByTag(2);
