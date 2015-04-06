@@ -20,7 +20,9 @@ enum BasicItemType {
     Danish,
     Donut,
     Macaroon,
-    SugarCookie
+    SugarCookie,
+    ForkAcross,
+    ForkVertical
 };
 
 /* 区别特殊元素的性质 */
@@ -47,7 +49,7 @@ public:
     
 private:
     int itemType;
-    int itemSpecialType; //存储特殊元素的类型，1、竖，2、横
+    int itemSpecialType; //存储特殊元素的类型，7、竖，6、横
     std::string itemSpecialNomber;//存储特殊元素的编码
     
 };

@@ -86,7 +86,7 @@ private:
     
     void removeAction(Node * node);
     
-    void itemSpecialAction(int itemSpecialType, TileSprite* onTouchTile);//对特殊元素的处理：1、增加动画效果。2、把需要删除的item放入列表中
+    void itemSpecialAction(TileSprite* onTouchTile);//对特殊元素的处理：1、增加动画效果。2、把需要删除的item放入列表中
 };
 
 #endif /* defined(__LittleKnight__NormalModeScene__) */

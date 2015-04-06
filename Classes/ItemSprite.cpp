@@ -53,6 +53,14 @@ ItemSprite* ItemSprite::createBasicItem(BasicItemType itemType) {
                 item->initWithSpriteFrameName("SugarCookie.png");
                 item->setItemType(BasicItemType::SugarCookie);
                 break;
+            case BasicItemType::ForkAcross:
+                item->initWithSpriteFrameName("ForkAcross.png");
+                item->setItemType(BasicItemType::ForkAcross);
+                break;
+            case BasicItemType::ForkVertical:
+                item->initWithSpriteFrameName("ForkVertical.png");
+                item->setItemType(BasicItemType::ForkVertical);
+                break;
         }
         item->autorelease();
         return item;

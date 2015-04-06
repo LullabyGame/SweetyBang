@@ -7,7 +7,7 @@
             <key>Croissant.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{64,132},{60,60}}</string>
+                <string>{{130,28},{60,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>Cupcake.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{66,68},{60,62}}</string>
+                <string>{{64,136},{60,62}}</string>
                 <key>offset</key>
                 <string>{0,-3}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>Danish.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,130},{60,60}}</string>
+                <string>{{68,62},{60,60}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>Donut.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,192},{58,58}}</string>
+                <string>{{192,62},{58,58}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -56,10 +56,36 @@
                 <key>sourceSize</key>
                 <string>{64,72}</string>
             </dict>
+            <key>ForkAcross.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{98,24}}</string>
+                <key>offset</key>
+                <string>{1,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{2,38},{98,24}}</string>
+                <key>sourceSize</key>
+                <string>{100,100}</string>
+            </dict>
+            <key>ForkVertical.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{102,2},{24,98}}</string>
+                <key>offset</key>
+                <string>{1,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{39,1},{24,98}}</string>
+                <key>sourceSize</key>
+                <string>{100,100}</string>
+            </dict>
             <key>Macaroon.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{76,2},{58,48}}</string>
+                <string>{{202,2},{58,48}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -72,11 +98,11 @@
             <key>SugarCookie.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,68},{60,62}}</string>
+                <string>{{2,136},{60,62}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{2,5},{60,62}}</string>
                 <key>sourceSize</key>
@@ -85,11 +111,11 @@
             <key>Tile@2x.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{64,72}}</string>
+                <string>{{2,62},{64,72}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{64,72}}</string>
                 <key>sourceSize</key>
@@ -103,9 +129,9 @@
             <key>realTextureFileName</key>
             <string>sweety.png</string>
             <key>size</key>
-            <string>{128,256}</string>
+            <string>{256,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4f66725e92aab1f429eb83733452831f:1/1$</string>
+            <string>$TexturePacker:SmartUpdate:4977c5ee1f0078bef0489d786f777380:1/1$</string>
             <key>textureFileName</key>
             <string>sweety.png</string>
         </dict>
