@@ -20,17 +20,7 @@ enum BasicItemType {
     Danish,
     Donut,
     Macaroon,
-    SugarCookie,
-    ForkAcross,
-    ForkVertical
-};
-
-/* 区别特殊元素的性质 */
-enum SpecialType{
-    Aommon,
-    Across,
-    Vertical,
-    Region
+    SugarCookie
 };
 
 class ItemSprite : public Sprite {
@@ -42,16 +32,9 @@ public:
     
     int getItemType();
     void setItemType(int itemType);
-    int getItemSpecialType();
-    void setItemSpecialType(int itemSpecialType);
-    std::string getItemSpecialNomber();
-    void setItemSpecialNomber(std::string itemSpecialNomber);
     
 private:
     int itemType;
-    int itemSpecialType; //存储特殊元素的类型，7、竖，6、横
-    std::string itemSpecialNomber;//存储特殊元素的编码
-    
 };
 
 #endif /* defined(__LittleKnight__ItemSprite__) */

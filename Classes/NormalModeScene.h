@@ -19,6 +19,7 @@
 #include "LineSprite.h"
 #include "Settings.h"
 #include "SimpleAudioEngine.h"
+#include "SpecialSprite.h"
 
 USING_NS_CC;
 
@@ -54,6 +55,7 @@ private:
     
     TileSprite* tileMatrix[MATRIX_WIDTH][MATRIX_HEIGHT] = {0};
     TileSprite* lastPaintedTile;
+    TileSprite* moveOnTouchTile;//用于删除重复线段时记录当前点击到的单元格
     LayerColor* speciallayer;// 遮挡会被特殊元素消除的元素
     Sprite* spriteAction;// 遮挡不能连线的元素
     cocos2d::Vector<TileSprite*> linePassedTiles;
@@ -75,7 +77,7 @@ private:
     TileSprite* getOnTouchTile(float onTouchX, float onTouchY);// 查询当前触摸点在Tile矩阵中的位置
     void darwLine(TileSprite* beginTile, TileSprite* endTile);
     bool isSameItemType(TileSprite* lastTile, TileSprite* currentTile);
-    void deleteDepetitionLine(TileSprite* onTouchTile);// 当选择到已经经过的格子，删除该格子后的线段
+    void deleteRepetitionLine(TileSprite* onTouchTile);// 当选择到已经经过的格子，删除该格子后的线段
     
     void fallDownItems();
     void fillTiles();

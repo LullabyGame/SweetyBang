@@ -246,7 +246,9 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
         // CCLOG("当前选中的为Tile[%d][%d]", currentTile->getArrayX(), currentTile->getArrayY());
         lastPaintedTile = onTouchTile;
         linePassedTiles.pushBack(lastPaintedTile);
-        itemSpecialAction(onTouchTile);
+        if (onTouchTile->getItem()->getChildByTag(2) != NULL) {
+            itemSpecialAction(onTouchTile);
+        }
     }
     return true;
 }
@@ -259,43 +261,43 @@ bool NormalModeScene::onTouchBegan(Touch *touch, Event *event) {
  */
 void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
     Point touchPoint = touch->getLocation();
-    TileSprite* onTouchTile = getOnTouchTile(touchPoint.x, touchPoint.y);
+    moveOnTouchTile = getOnTouchTile(touchPoint.x, touchPoint.y);
     
-    if (onTouchTile != NULL) {
-        int touchCenterX = onTouchTile->getPosX() + tileSideLength / 2;
-        int touchCenterY = onTouchTile->getPosY() + tileSideLength / 2;
+    if (moveOnTouchTile != NULL) {
+        int touchCenterX = moveOnTouchTile->getPosX() + tileSideLength / 2;
+        int touchCenterY = moveOnTouchTile->getPosY() + tileSideLength / 2;
         
         // touch tile and last tile is the same tile
-        if (onTouchTile == lastPaintedTile) {
+        if (moveOnTouchTile == lastPaintedTile) {
             return;
         }
         
         // touch point is in the chink area
-        if (abs(touchPoint.x - touchCenterX) > (tileSideLength / 2 - TILE_CHINK) ||
-            abs(touchPoint.y - touchCenterY) > (tileSideLength / 2 - TILE_CHINK)) {
+        if (std::abs(touchPoint.x - touchCenterX) > (tileSideLength / 2 - TILE_CHINK) ||
+            std::abs(touchPoint.y - touchCenterY) > (tileSideLength / 2 - TILE_CHINK)) {
             return;
         }
         
         // not near the last painted tile
-        if (abs(lastPaintedTile->getArrayX() - onTouchTile->getArrayX()) > 1 ||
-            abs(lastPaintedTile->getArrayY() - onTouchTile->getArrayY()) > 1) {
+        if (abs(lastPaintedTile->getArrayX() - moveOnTouchTile->getArrayX()) > 1 ||
+            abs(lastPaintedTile->getArrayY() - moveOnTouchTile->getArrayY()) > 1) {
             return;
         }
         
         // repetition tile
-        if (linePassedTiles.contains(onTouchTile)) {
-            deleteDepetitionLine(onTouchTile);
-            lastPaintedTile = onTouchTile;
+        if (linePassedTiles.contains(moveOnTouchTile)) {
+            deleteRepetitionLine(moveOnTouchTile);
+            lastPaintedTile = moveOnTouchTile;
             return;
         }
         
         // not the same type with the last tile
-        if (!isSameItemType(lastPaintedTile, onTouchTile)) {
+        if (!isSameItemType(lastPaintedTile, moveOnTouchTile)) {
             return;
         }
         
         // draw line
-        LineSprite* line = LineSprite::createLine(lastPaintedTile, onTouchTile);
+        LineSprite* line = LineSprite::createLine(lastPaintedTile, moveOnTouchTile);
         this->addChild(line);
         lines.pushBack(line);
         
@@ -305,36 +307,28 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
             linePassedTiles.pushBack(lastPaintedTile);
         }
         
-        if (lastPaintedTile->getItem()->getItemSpecialType() == 0) {
-            /* 如果上一个元素是普通元素 */
-            if (onTouchTile != NULL) {
-                itemSpecialAction(onTouchTile);
-            }
-        }else{
+        /* 遇到特殊元素的处理 */
+        if (lastPaintedTile->getItem()->getChildByTag(2) != NULL){
             /* 如果上一个元素是特殊元素 */
-            onTouchTile->getItem()->setItemSpecialNomber(lastPaintedTile->getItem()->getItemSpecialNomber());
-            onTouchTile->getItem()->setItemSpecialType(lastPaintedTile->getItem()->getItemSpecialType());
-            onTouchTile->getItem()->addChild(lastPaintedTile->getItem()->getChildByTag(2));
-            
-            /* 清除前一个格子的动画效果，但不删除前一个格子的元素属性和名称，用于撤销时识别 */
-            lastPaintedTile->getItem()->removeChildByTag(2);
-            
-            if (onTouchTile != NULL) {
-                itemSpecialAction(onTouchTile);
+            moveOnTouchTile->getItem()->addChild(lastPaintedTile->getItem()->getChildByTag(2));
+            /* 隐藏上一个元素的效果，但不删除，用于撤销时识别 */
+            lastPaintedTile->getItem()->getChildByTag(2)->setVisible(false);
+            if (moveOnTouchTile != NULL) {
+                itemSpecialAction(moveOnTouchTile);
             }
         }
-        lastPaintedTile = onTouchTile;
-        linePassedTiles.pushBack(onTouchTile);
+        lastPaintedTile = moveOnTouchTile;
+        linePassedTiles.pushBack(moveOnTouchTile);
         
         
         /* 增加会产生特殊元素的标识*/
         if (linePassedTiles.size() != 0 && linePassedTiles.size() % 5 == 0) {
-            ItemSprite *testspr = ItemSprite::createBasicItem(ForkVertical);
+            SpecialSprite *testspr = SpecialSprite::createSpecialItem(ForkVertical);
             testspr->setAnchorPoint(Vec2(0.5, 0.5));
             testspr->setTag(1);
             testspr->setScale(0.7, 0.7);
             testspr->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
-            onTouchTile->getItem()->addChild(testspr,1);
+            moveOnTouchTile->getItem()->addChild(testspr,1);
             testspr->runAction(RepeatForever::create(RotateBy::create(1, 720)));
             /* 停止动作后重启动作 */
             Director::getInstance()->getActionManager()->pauseTarget(testspr);
@@ -351,7 +345,7 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
  *  @param event
  */
 void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
-    Size visiableSize = Director::getInstance()->getVisibleSize();
+//    Size visiableSize = Director::getInstance()->getVisibleSize();
     Point touchPoint = touch->getLocation();
     TileSprite* onTouchTile = getOnTouchTile(touchPoint.x, touchPoint.y);
     // remove lines
@@ -375,7 +369,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                     while (true) {
                         int x = rand()%MATRIX_WIDTH;
                         int y = rand()%MATRIX_HEIGHT;
-                        if (tileMatrix[x][y]->getItem()->getItemSpecialType() == 0) {
+                        if (tileMatrix[x][y]->getItem()->getChildByTag(2) == NULL) {
                             tile = tileMatrix[x][y];
                             break;
                         }
@@ -384,7 +378,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                     int end_prox = tile->getPosX() + tileSideLength / 2;
                     int end_proy = tile->getPosY() + tileSideLength / 2;
                     /* 叉子飞起效果 */
-                    ItemSprite *move = ItemSprite::createBasicItem(ForkVertical);
+                    SpecialSprite *move = SpecialSprite::createSpecialItem(ForkVertical);
                     move->setPosition(Vec2(start_prox,start_proy));
                     this->addChild(move);
                     move->runAction(
@@ -403,23 +397,25 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
                                                 itemSpecialName += stageStream.str();
                                             }
                                             if (directionType == 0) {
-                                                ItemSprite *chazi_shu = ItemSprite::createBasicItem(ForkVertical);
+                                                SpecialSprite *chazi_shu = SpecialSprite::createSpecialItem(ForkVertical);
                                                 chazi_shu->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
                                                 chazi_shu->setTag(2);
                                                 chazi_shu->setScale(0.7, 0.7);
-                                                tile->getItem()->addChild(chazi_shu);
                                                 /* 给特殊元素设置标记 */
-                                                tile->getItem()->setItemSpecialType(7);
-                                                tile->getItem()->setItemSpecialNomber(itemSpecialName);
+                                                chazi_shu->setItemSpecialType(7);
+                                                chazi_shu->setItemSpecialNomber(itemSpecialName);
+                                                chazi_shu->setItemStatus(0);
+                                                tile->getItem()->addChild(chazi_shu);
                                             }else{
-                                                ItemSprite *chazi_heng = ItemSprite::createBasicItem(ForkAcross);
+                                                SpecialSprite *chazi_heng = SpecialSprite::createSpecialItem(ForkAcross);
                                                 chazi_heng->setPosition(Vec2(tileSideLength * 0.4, tileSideLength * 0.5));
                                                 chazi_heng->setTag(2);
                                                 chazi_heng->setScale(0.7, 0.7);
-                                                tile->getItem()->addChild(chazi_heng);
                                                 /* 给特殊元素设置标记 */
-                                                tile->getItem()->setItemSpecialType(6);
-                                                tile->getItem()->setItemSpecialNomber(itemSpecialName);
+                                                chazi_heng->setItemSpecialType(6);
+                                                chazi_heng->setItemSpecialNomber(itemSpecialName);
+                                                chazi_heng->setItemStatus(0);
+                                                tile->getItem()->addChild(chazi_heng);
                                             }
                                         }),NULL
                                     )
@@ -475,7 +471,7 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sound/Ka-Ching.wav");
         
     }else{
-        if (onTouchTile->getItem()->getItemSpecialType() != 0) {
+        if (onTouchTile->getItem()->getChildByTag(2) != NULL) {
             /* 当连线不够三个的时候不作处理，但是删除特殊元素的效果 */
             
             for (int i = 0; i < MATRIX_WIDTH; i++) {
@@ -490,12 +486,11 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
             /* 把特殊元素放回原来的位置后，清除其他曾经经过的痕迹 */
             for (int i = 0; i < linePassedTiles.size(); i++ ) {
                 TileSprite *tileSprite = linePassedTiles.at(i);
-                if (tileSprite->getItem()->getItemSpecialNomber() == onTouchTile->getItem()->getItemSpecialNomber()) {
-                    tileSprite->getItem()->addChild(onTouchTile->getItem()->getChildByTag(2));
+                if (((SpecialSprite*)tileSprite->getItem()->getChildByTag(2))->getItemSpecialNomber()
+                    == ((SpecialSprite*)onTouchTile->getItem()->getChildByTag(2))->getItemSpecialNomber()) {
+                    tileSprite->getItem()->getChildByTag(2)->setVisible(true);
                     for (int j = i+1; j < linePassedTiles.size(); j++ ) {
                         linePassedTiles.at(j)->getItem()->removeChildByTag(2);
-                        linePassedTiles.at(j)->getItem()->setItemSpecialNomber("");
-                        linePassedTiles.at(j)->getItem()->setItemSpecialType(0);
                     }
                     break;
                 }
@@ -623,13 +618,14 @@ bool NormalModeScene::isSameItemType(TileSprite* lastTile, TileSprite* currentTi
 
 
 /**
- *  1、删除重复的线
- *  2、删除特殊元素标识
- *  3、删除特殊元素标记的区域标识
+ *  撤销连线操作
+ *   1、删除重复的线
+ *   2、删除特殊元素标识
+ *   3、删除特殊元素标记的区域标识
  *
  *  @param onTouchTile
  */
-void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
+void NormalModeScene::deleteRepetitionLine(TileSprite* onTouchTile) {
     for (auto sprite : lines) {
         if (sprite->getBeginTile() == onTouchTile) {
             removeChild(sprite);
@@ -637,26 +633,20 @@ void NormalModeScene::deleteDepetitionLine(TileSprite* onTouchTile) {
             linePassedTiles.erase(linePassedTiles.find(sprite->getEndTile()));
             /* 删除特殊元素标识 */
             sprite->getEndTile()->getItem()->removeChildByTag(1);
-            if (sprite->getEndTile()->getItem()->getItemSpecialNomber() == onTouchTile->getItem()->getItemSpecialNomber() &&
-                onTouchTile->getItem()->getItemSpecialNomber() != "") {
+            if (((SpecialSprite*)sprite->getEndTile()->getItem()->getChildByTag(2))->getItemSpecialNomber()
+                == ((SpecialSprite*)moveOnTouchTile->getItem()->getChildByTag(2))->getItemSpecialNomber()) {
                 /* 1、当前元素有特殊元素经过的记录 */
-                onTouchTile->getItem()->addChild(sprite->getEndTile()->getItem()->getChildByTag(2));
-                itemSpecialAction(onTouchTile);
-                /* 清除上一个特殊元素的效果 */
-                sprite->getEndTile()->getItem()->setItemSpecialNomber("");
-                sprite->getEndTile()->getItem()->setItemSpecialType(0);
+                moveOnTouchTile->getItem()->getChildByTag(2)->setVisible(true);
+                /* 清除特殊元素的效果 */
                 sprite->getEndTile()->getItem()->removeChildByTag(2);
-            }else{
-                /* 2、当前元素没有特殊元素经过的记录 */
-                itemSpecialAction(onTouchTile);
             }
+            itemSpecialAction(moveOnTouchTile);
             
-            deleteDepetitionLine(sprite->getEndTile());
+            deleteRepetitionLine(sprite->getEndTile());
             break;
         }
     }
 }
-
 
 /**
  *  返回主菜单(Main Menu按钮回调)
@@ -686,13 +676,13 @@ void NormalModeScene::setStage(int stage) {
 
 /**
  *  对特殊元素的处理：
- *      1、增加动画效果。
+ *      1、增加打叉删除区域的动画效果。
  *      2、把需要删除的item放入列表中.
  *
  */
 void NormalModeScene::itemSpecialAction(TileSprite *onTouchTile){
     
-    int itemSpecialType = onTouchTile->getItem()->getItemSpecialType();
+    int itemSpecialType = ((SpecialSprite*)onTouchTile->getItem()->getChildByTag(2))->getItemSpecialType();
     /* 清除之前特殊元素消除范围单元格的动画效果，清除集合中之前单元格消除范围单元格 */
     for (int i = 0; i < itemSpecialVector.size(); i++ ) {
         itemSpecialVector.at(i)->getItem()->removeChildByTag(4);

@@ -53,14 +53,6 @@ ItemSprite* ItemSprite::createBasicItem(BasicItemType itemType) {
                 item->initWithSpriteFrameName("SugarCookie.png");
                 item->setItemType(BasicItemType::SugarCookie);
                 break;
-            case BasicItemType::ForkAcross:
-                item->initWithSpriteFrameName("ForkAcross.png");
-                item->setItemType(BasicItemType::ForkAcross);
-                break;
-            case BasicItemType::ForkVertical:
-                item->initWithSpriteFrameName("ForkVertical.png");
-                item->setItemType(BasicItemType::ForkVertical);
-                break;
         }
         item->autorelease();
         return item;
@@ -78,20 +70,4 @@ int ItemSprite::getItemType() {
 
 void ItemSprite::setItemType(int itemType) {
     this->itemType = itemType;
-}
-
-int ItemSprite::getItemSpecialType(){
-    return this->itemSpecialType;
-}
-
-void ItemSprite::setItemSpecialType(int itemSpecialType){
-    this->itemSpecialType = itemSpecialType;
-}
-
-std::string ItemSprite::getItemSpecialNomber(){
-    return this->itemSpecialNomber;
-}
-
-void ItemSprite::setItemSpecialNomber(std::string itemSpecialNomber){
-    this->itemSpecialNomber = itemSpecialNomber;
 }
