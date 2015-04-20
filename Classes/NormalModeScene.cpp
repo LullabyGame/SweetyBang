@@ -340,6 +340,9 @@ void NormalModeScene::onTouchMoved(Touch *touch, Event *event) {
                 itemSpecialAction(moveOnTouchTile);
             }
         }
+        if (moveOnTouchTile->getItem()->getChildByTag(2) != NULL) {
+            itemSpecialAction(moveOnTouchTile);
+        }
         lastPaintedTile = moveOnTouchTile;
         linePassedTiles.pushBack(moveOnTouchTile);
         
@@ -509,13 +512,16 @@ void NormalModeScene::onTouchEnded(Touch *touch, Event *event) {
             /* 把特殊元素放回原来的位置后，清除其他曾经经过的痕迹 */
             for (int i = 0; i < linePassedTiles.size(); i++ ) {
                 TileSprite *tileSprite = linePassedTiles.at(i);
-                if (((SpecialSprite*)tileSprite->getItem()->getChildByTag(2))->getItemSpecialNomber()
-                    == ((SpecialSprite*)onTouchTile->getItem()->getChildByTag(2))->getItemSpecialNomber()) {
-                    tileSprite->getItem()->getChildByTag(2)->setVisible(true);
-                    for (int j = i+1; j < linePassedTiles.size(); j++ ) {
-                        linePassedTiles.at(j)->getItem()->removeChildByTag(2);
+                /* 如果不加下面的判断，第一个不是特殊元素，第二个是特殊元素的时候异常 */
+                if (tileSprite->getItem()->getChildByTag(2) != NULL) {
+                    if (((SpecialSprite*)tileSprite->getItem()->getChildByTag(2))->getItemSpecialNomber()
+                        == ((SpecialSprite*)onTouchTile->getItem()->getChildByTag(2))->getItemSpecialNomber()) {
+                        tileSprite->getItem()->getChildByTag(2)->setVisible(true);
+                        for (int j = i+1; j < linePassedTiles.size(); j++ ) {
+                            linePassedTiles.at(j)->getItem()->removeChildByTag(2);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             itemSpecialVector.clear();
@@ -657,12 +663,14 @@ void NormalModeScene::deleteRepetitionLine(TileSprite* onTouchTile) {
             /* 删除特殊元素标识 */
             sprite->getEndTile()->getItem()->removeChildByTag(1);
             if (sprite->getEndTile()->getItem()->getChildByTag(2) != NULL) {
-                if (((SpecialSprite*)sprite->getEndTile()->getItem()->getChildByTag(2))->getItemSpecialNomber()
-                    == ((SpecialSprite*)moveOnTouchTile->getItem()->getChildByTag(2))->getItemSpecialNomber()) {
-                    /* 1、当前元素有特殊元素经过的记录 */
-                    moveOnTouchTile->getItem()->getChildByTag(2)->setVisible(true);
-                    /* 清除特殊元素的效果 */
-                    sprite->getEndTile()->getItem()->removeChildByTag(2);
+                if (moveOnTouchTile->getItem()->getChildByTag(2) != NULL) {
+                    if (((SpecialSprite*)sprite->getEndTile()->getItem()->getChildByTag(2))->getItemSpecialNomber()
+                        == ((SpecialSprite*)moveOnTouchTile->getItem()->getChildByTag(2))->getItemSpecialNomber()) {
+                        /* 1、当前元素有特殊元素经过的记录 */
+                        moveOnTouchTile->getItem()->getChildByTag(2)->setVisible(true);
+                        /* 清除特殊元素的效果 */
+                        sprite->getEndTile()->getItem()->removeChildByTag(2);
+                    }
                 }
                 itemSpecialAction(moveOnTouchTile);
             }
@@ -675,7 +683,7 @@ void NormalModeScene::deleteRepetitionLine(TileSprite* onTouchTile) {
 /**
  *  返回主菜单(Main Menu按钮回调)
  *
- *  @param sender <#sender description#>
+ *  @param sender sender description
  */
 void NormalModeScene::mainMenuCallback(Ref *sender) {
     back2StageSelectScene();
@@ -706,7 +714,6 @@ void NormalModeScene::setStage(int stage) {
  */
 void NormalModeScene::itemSpecialAction(TileSprite *onTouchTile){
     
-    int itemSpecialType = ((SpecialSprite*)onTouchTile->getItem()->getChildByTag(2))->getItemSpecialType();
     /* 清除之前特殊元素消除范围单元格的动画效果，清除集合中之前单元格消除范围单元格 */
     for (int i = 0; i < itemSpecialVector.size(); i++ ) {
         itemSpecialVector.at(i)->getItem()->removeChildByTag(4);
@@ -720,7 +727,12 @@ void NormalModeScene::itemSpecialAction(TileSprite *onTouchTile){
     Vector<SpriteFrame*> vec;
     char name[20];
     memset(name, 0, 20);
-
+    
+    if (onTouchTile->getItem()->getChildByTag(2) == NULL) {
+        return;
+    }
+    
+    int itemSpecialType = ((SpecialSprite*)onTouchTile->getItem()->getChildByTag(2))->getItemSpecialType();
     /* 7是横，6是竖 */
     if (itemSpecialType == 7) {
         for (int i = 0; i < MATRIX_HEIGHT; i++) {
